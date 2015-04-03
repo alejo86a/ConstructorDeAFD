@@ -13,15 +13,15 @@ import co.edu.udea.constructorDeAFD.vista.VentanaPrincipal;
  */
 public class ControladorPrincipal {
 	
-	private ControladorVentana ctrlPrincipal;
+	private ControladorVentana ctrlVentana;
 	private VentanaPrincipal guiPrincipal;
 
 	/**
 	 * 
 	 */
 	public ControladorPrincipal() {
-		guiPrincipal = new VentanaPrincipal();
-		ctrlPrincipal = new ControladorVentana(guiPrincipal);
+		guiPrincipal = new VentanaPrincipal(ctrlVentana);
+		ctrlVentana = new ControladorVentana(guiPrincipal);
 	}
 
 

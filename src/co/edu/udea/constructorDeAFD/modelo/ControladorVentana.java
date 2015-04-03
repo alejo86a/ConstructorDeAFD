@@ -1,7 +1,7 @@
 /**
  * 
  */
-package co.edu.udea.constructoDeAFD.modelo;
+package co.edu.udea.constructorDeAFD.modelo;
 
 import co.edu.udea.constructorDeAFD.vista.VentanaPrincipal;
 

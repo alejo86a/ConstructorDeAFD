@@ -91,8 +91,8 @@ public class AutomataFinito {
 
 	}
 
-	public Vector<String> validarHilera(String hilera) {
-		Vector<String> pasoApaso = null;
+	public int[][] validarHilera(String hilera) {
+		int[][] pasoApaso = null;
 
 		return pasoApaso;
 	}

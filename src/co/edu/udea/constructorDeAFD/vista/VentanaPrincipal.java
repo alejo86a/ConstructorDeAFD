@@ -3,16 +3,14 @@
  */
 package co.edu.udea.constructorDeAFD.vista;
 
-import java.util.Vector;
-
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
-import javax.swing.JScrollPane;
 import javax.swing.JTable;
+import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
 import co.edu.udea.constructorDeAFD.modelo.ControladorVentana;
@@ -31,7 +29,6 @@ public class VentanaPrincipal extends JFrame {
 	 * 
 	 */
 	private JPanel contentPane;
-	private JScrollPane JscrollIzquierdo;
 	private int Paso;
 	/**
 	 * Lado izquierdo
@@ -63,27 +60,42 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal(ControladorVentana ctrlVentana){
 		super("Constructor de Automatas Finitos Deterministicos");
 		this.ctrlVentana = ctrlVentana;
+		this.Paso=0;
 		//Iniciar los atributos basicos del jframe
 		this.setVisible(true);
-		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(0, 0, java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width, java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
-		this.setContentPane(contentPane);
 		
 		//iniciar los atributos basicos del panel principal
-		JscrollIzquierdo.setViewportView(contentPane);
+		contentPane = new JPanel();
+		this.setContentPane(contentPane);
 		contentPane.setLayout(null);
+		contentPane.setName("panelP");
+		System.out.println(getContentPane().getName());
 		
 		initLadoIzquierdo();
 		initLadoDerecho();
 	}
 
 	private void initLadoIzquierdo() {
-		// TODO Auto-generated method stub
+		JtfdEstadosPorUsuario = new JFormattedTextField[2];
+		JtfdEstadosPorUsuario[0] = new JFormattedTextField();
+		JtfdEstadosPorUsuario[0].setBounds(20, 20, 40, 20);
+		contentPane.add(JtfdEstadosPorUsuario[0]);
 		
+		
+		contentPane.add(new JTextField());
+		
+		
+		JcbMatrizTransicionesPorUsuario = new JComboBox[2][2];
 	}
 
 	private void initLadoDerecho() {
-		// TODO Auto-generated method stub
+		JlblEstadosPorUsuario = new JLabel[2];
+		JlblEstadosPorUsuario[0]= new JLabel("Hola");
+		JlblEstadosPorUsuario[0].setBounds(100, 100, 40, 20);
+		this.getContentPane().add(JlblEstadosPorUsuario[0]);
+		System.out.println("hola");
 		
 	}
 }

@@ -18,7 +18,7 @@ public class ControladorVentana {
 	
 	private AutomataFinito aFUsuario;
 	private AutomataFinito aFSimplicado;
-	private Vector<String> pasoApaso;
+	private int[][] pasoApaso;
 	
 	/**
 	 * Recibe la instancia unica de la ventana principal
@@ -47,7 +47,8 @@ public class ControladorVentana {
 		return aFSimplicado.getTransiciones();
 	}
 	
-	public String getPaso(int p){
-		return "";
+	public Vector<Integer> getPaso(int p){
+		Vector<Integer> fila=null;
+		return fila;
 	}
 }

@@ -3,6 +3,11 @@
  */
 package co.edu.udea.constructorDeAFD.vista;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.awt.event.KeyEvent;
+import java.awt.event.KeyListener;
+
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -23,7 +28,6 @@ import co.edu.udea.constructorDeAFD.modelo.ControladorVentana;
  */
 public class VentanaPrincipal extends JFrame {
 
-	
 	private ControladorVentana ctrlVentana;
 	/**
 	 * 
@@ -52,29 +56,30 @@ public class VentanaPrincipal extends JFrame {
 	private JButton JbtnSolucionado;
 	private JFormattedTextField JtfdHilera;
 	private JLabel JlblRespuesta;
-	
+
 	/**
 	 * 
 	 * @param ctrlVentana
 	 */
-	public VentanaPrincipal(ControladorVentana ctrlVentana){
+	public VentanaPrincipal(ControladorVentana ctrlVentana) {
 		super("Constructor de Automatas Finitos Deterministicos");
 		this.ctrlVentana = ctrlVentana;
-		this.Paso=0;
-		//Iniciar los atributos basicos del jframe
-		this.setVisible(true);
-		//this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		this.setBounds(0, 0, java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().width, java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment().getMaximumWindowBounds().height);
-		
-		//iniciar los atributos basicos del panel principal
+		this.Paso = 0;
+		// Iniciar los atributos basicos del jframe;
+		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setBounds(0, 0, java.awt.GraphicsEnvironment
+				.getLocalGraphicsEnvironment().getMaximumWindowBounds().width,
+				java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
+						.getMaximumWindowBounds().height);
+
+		// iniciar los atributos basicos del panel principal
 		contentPane = new JPanel();
 		this.setContentPane(contentPane);
 		contentPane.setLayout(null);
-		contentPane.setName("panelP");
-		System.out.println(getContentPane().getName());
-		
+
 		initLadoIzquierdo();
 		initLadoDerecho();
+		this.setVisible(true);
 	}
 
 	private void initLadoIzquierdo() {
@@ -82,20 +87,163 @@ public class VentanaPrincipal extends JFrame {
 		JtfdEstadosPorUsuario[0] = new JFormattedTextField();
 		JtfdEstadosPorUsuario[0].setBounds(20, 20, 40, 20);
 		contentPane.add(JtfdEstadosPorUsuario[0]);
-		
-		
-		contentPane.add(new JTextField());
-		
-		
+		JtfdEstadosPorUsuario[1] = new JFormattedTextField();
+		JtfdEstadosPorUsuario[1].setBounds(20, 40, 40, 20);
+		contentPane.add(JtfdEstadosPorUsuario[1]);
+		agregarEventoEstadosUsuario();
+
+		JtfdSimbolosPorUsuario = new JFormattedTextField[2];
+		JtfdSimbolosPorUsuario[0] = new JFormattedTextField();
+		JtfdSimbolosPorUsuario[0].setBounds(60, 0, 60, 20);
+		contentPane.add(JtfdSimbolosPorUsuario[0]);
+		JtfdSimbolosPorUsuario[1] = new JFormattedTextField();
+		JtfdSimbolosPorUsuario[1].setBounds(120, 0, 60, 20);
+		contentPane.add(JtfdSimbolosPorUsuario[1]);
+
 		JcbMatrizTransicionesPorUsuario = new JComboBox[2][2];
+		int x = 60, y = 20;
+		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
+			for (int j = 0; j < JcbMatrizTransicionesPorUsuario[0].length; j++) {
+				JcbMatrizTransicionesPorUsuario[i][j] = new JComboBox();
+				JcbMatrizTransicionesPorUsuario[i][j].setBounds(x, y, 60, 20);
+				contentPane.add(JcbMatrizTransicionesPorUsuario[i][j]);
+				x += 60;
+			}
+			x = 60;
+			y = y + 20;
+		}
+		llenarOpcionesMatrizTransiciones();
+
+		JtbtnAceptacionesUsuario = new JToggleButton[2];
+		JtbtnAceptacionesUsuario[0] = new JToggleButton();
+		JtbtnAceptacionesUsuario[0].setBounds(180, 20, 60, 20);
+		JtbtnAceptacionesUsuario[0].setText("0");
+		contentPane.add(JtbtnAceptacionesUsuario[0]);
+		JtbtnAceptacionesUsuario[1] = new JToggleButton();
+		JtbtnAceptacionesUsuario[1].setBounds(180, 40, 60, 20);
+		JtbtnAceptacionesUsuario[1].setText("0");
+		contentPane.add(JtbtnAceptacionesUsuario[1]);
+		agregrEventoAlVectorAceptaciones();
+
+		JbtnNuevaFila = new JButton();
+		JbtnNuevaFila.setBounds(40, 120, 80, 20);
+		JbtnNuevaFila.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				agregarFila();
+			}
+		});
+		JbtnNuevaFila.setText("+ Fila");
+		contentPane.add(JbtnNuevaFila);
+		JbtnNuevaColumna = new JButton();
+		JbtnNuevaColumna.setBounds(140, 120, 80, 20);
+		JbtnNuevaColumna.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				agregarColumna();
+			}
+		});
+		JbtnNuevaColumna.setText("+ Columna");
+		contentPane.add(JbtnNuevaColumna);
 	}
 
 	private void initLadoDerecho() {
 		JlblEstadosPorUsuario = new JLabel[2];
-		JlblEstadosPorUsuario[0]= new JLabel("Hola");
+		JlblEstadosPorUsuario[0] = new JLabel("Hola");
 		JlblEstadosPorUsuario[0].setBounds(100, 100, 40, 20);
-		this.getContentPane().add(JlblEstadosPorUsuario[0]);
-		System.out.println("hola");
-		
+		// this.getContentPane().add(JlblEstadosPorUsuario[0]);
+
+	}
+
+	private void agregrEventoAlVectorAceptaciones() {
+		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
+			final int p = i;
+			JtbtnAceptacionesUsuario[i].addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					if (JtbtnAceptacionesUsuario[p].isSelected()) {
+						JtbtnAceptacionesUsuario[p].setText("1");						
+					} else {
+						JtbtnAceptacionesUsuario[p].setText("0");
+					}
+				}
+			});
+		}
+	}
+
+	private void llenarOpcionesMatrizTransiciones() {
+		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
+			for (int j = 0; j < JcbMatrizTransicionesPorUsuario[0].length; j++) {
+				JcbMatrizTransicionesPorUsuario[i][j].removeAllItems();
+				for (int k = 0; k < JtfdEstadosPorUsuario.length; k++) {
+					JcbMatrizTransicionesPorUsuario[i][j]
+							.addItem(JtfdEstadosPorUsuario[k].getText());
+
+				}
+			}
+		}
+	}
+
+	private void agregarEventoEstadosUsuario() {
+		for (int i = 0; i < JtfdEstadosPorUsuario.length; i++) {
+			JtfdEstadosPorUsuario[i].addKeyListener(new KeyListener() {
+
+				@Override
+				public void keyTyped(KeyEvent arg0) {
+				}
+
+				@Override
+				public void keyReleased(KeyEvent arg0) {
+					llenarOpcionesMatrizTransiciones();
+
+				}
+
+				@Override
+				public void keyPressed(KeyEvent arg0) {
+				}
+			});
+		}
+	}
+
+	private void agregarFila() {
+		agregarEstadoPorUsuario();
+		agregarFilaDeTranscionesPorUsuario();
+		agregarAceptacionPorUsuario();
+
+	}
+
+	private void agregarAceptacionPorUsuario() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void agregarFilaDeTranscionesPorUsuario() {
+		// TODO Auto-generated method stub
+
+	}
+
+	private void agregarEstadoPorUsuario() {
+		JFormattedTextField[] aux = new JFormattedTextField[JtfdEstadosPorUsuario.length];
+		aux = JtfdEstadosPorUsuario;
+		JtfdEstadosPorUsuario = new JFormattedTextField[JtfdEstadosPorUsuario.length + 1];
+		for (int i = 0; i < aux.length; i++) {
+			JtfdEstadosPorUsuario[i] = aux[i];
+		}
+		JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 1] = new JFormattedTextField();
+		JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 1]
+				.setBounds(20,
+						JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 2]
+								.getY() + 20, 40, 20);
+		contentPane
+				.add(JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 1]);
+		agregarEventoEstadosUsuario();
+		contentPane.repaint();
+	}
+
+	private void agregarColumna() {
+
 	}
 }

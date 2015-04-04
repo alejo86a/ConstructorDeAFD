@@ -165,7 +165,7 @@ public class VentanaPrincipal extends JFrame {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					if (JtbtnAceptacionesUsuario[p].isSelected()) {
-						JtbtnAceptacionesUsuario[p].setText("1");						
+						JtbtnAceptacionesUsuario[p].setText("1");
 					} else {
 						JtbtnAceptacionesUsuario[p].setText("0");
 					}
@@ -175,16 +175,22 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void llenarOpcionesMatrizTransiciones() {
+		String[] auxCombinaciones = generarCombinaciones();
 		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
 			for (int j = 0; j < JcbMatrizTransicionesPorUsuario[0].length; j++) {
 				JcbMatrizTransicionesPorUsuario[i][j].removeAllItems();
-				for (int k = 0; k < JtfdEstadosPorUsuario.length; k++) {
+				for (int k = 0; k < auxCombinaciones.length; k++) {
 					JcbMatrizTransicionesPorUsuario[i][j]
-							.addItem(JtfdEstadosPorUsuario[k].getText());
+							.addItem(auxCombinaciones[k]);
 
 				}
 			}
 		}
+	}
+	
+	private String[] generarCombinaciones() {
+		// metodo martin
+		return null;
 	}
 
 	private void agregarEventoEstadosUsuario() {
@@ -212,17 +218,61 @@ public class VentanaPrincipal extends JFrame {
 		agregarEstadoPorUsuario();
 		agregarFilaDeTranscionesPorUsuario();
 		agregarAceptacionPorUsuario();
+		moverBotonesDeAgregar();
 
 	}
 
 	private void agregarAceptacionPorUsuario() {
-		// TODO Auto-generated method stub
+		JToggleButton[] aux = new JToggleButton[JtbtnAceptacionesUsuario.length];
+		aux = JtbtnAceptacionesUsuario;
+		JtbtnAceptacionesUsuario = new JToggleButton[JtbtnAceptacionesUsuario.length + 1];
+		for (int i = 0; i < aux.length; i++) {
+			JtbtnAceptacionesUsuario[i] = aux[i];
+		}
+		JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1] = new JToggleButton();
+		JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1]
+				.setBounds(
+						JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 2]
+								.getX(),
+						JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 2]
+								.getY() + 20, 60, 20);
+		JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1]
+				.setText("0");
+		contentPane
+				.add(JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1]);
+		agregrEventoAlVectorAceptaciones();
+
+		contentPane.repaint();
 
 	}
 
 	private void agregarFilaDeTranscionesPorUsuario() {
-		// TODO Auto-generated method stub
-
+		JComboBox<String>[][] aux = new JComboBox[JcbMatrizTransicionesPorUsuario.length][JcbMatrizTransicionesPorUsuario[0].length];
+		aux = JcbMatrizTransicionesPorUsuario;
+		JcbMatrizTransicionesPorUsuario = new JComboBox[JcbMatrizTransicionesPorUsuario.length + 1][JcbMatrizTransicionesPorUsuario[0].length];
+		for (int i = 0; i < aux.length; i++) {
+			for (int j = 0; j < aux[0].length; j++) {
+				JcbMatrizTransicionesPorUsuario[i][j] = aux[i][j];
+			}
+		}
+		for (int i = 0; i < JcbMatrizTransicionesPorUsuario[0].length; i++) {
+			JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i] = new JComboBox();
+			JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i]
+					.setBounds(
+							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+									.getX(),
+							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+									.getY()
+									+ JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+											.getHeight(),
+							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+									.getWidth(),
+							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+									.getHeight());
+			contentPane.add(JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i]);
+		}
+		llenarOpcionesMatrizTransiciones();
+		contentPane.repaint();
 	}
 
 	private void agregarEstadoPorUsuario() {
@@ -241,6 +291,16 @@ public class VentanaPrincipal extends JFrame {
 				.add(JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 1]);
 		agregarEventoEstadosUsuario();
 		contentPane.repaint();
+	}
+
+	private void moverBotonesDeAgregar() {
+		JbtnNuevaFila.setBounds(JbtnNuevaFila.getX(),
+				JbtnNuevaFila.getY() + 20, JbtnNuevaFila.getWidth(),
+				JbtnNuevaFila.getHeight());
+		JbtnNuevaColumna.setBounds(JbtnNuevaColumna.getX(),
+				JbtnNuevaColumna.getY() + 20, JbtnNuevaColumna.getWidth(),
+				JbtnNuevaColumna.getHeight());
+
 	}
 
 	private void agregarColumna() {

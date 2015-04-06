@@ -1,7 +1,7 @@
 /**
  * Paquete que contiene todos los controladores de la aplicación
  */
-package co.edu.udea.constructorDeAFD.modelo;
+package co.edu.udea.constructorDeAFD.controlador;
 
 import co.edu.udea.constructorDeAFD.vista.VentanaPrincipal;
 

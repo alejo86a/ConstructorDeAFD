@@ -1,7 +1,7 @@
 /**
  * 
  */
-package co.edu.udea.constructorDeAFD.controlador;
+package co.edu.udea.constructorDeAFD.modelo;
 
 import java.util.Vector;
 

@@ -19,7 +19,7 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
 
-import co.edu.udea.constructorDeAFD.modelo.ControladorVentana;
+import co.edu.udea.constructorDeAFD.controlador.ControladorVentana;
 
 /**
  * Jframe que contiene los componenetes graficos de la aplicación
@@ -34,7 +34,7 @@ public class VentanaPrincipal extends JFrame {
 	 * 
 	 */
 	private JPanel contentPane;
-	private int Paso;
+	private int paso;
 	/**
 	 * Lado izquierdo
 	 */
@@ -65,9 +65,10 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal(ControladorVentana ctrlVentana) {
 		super("Constructor de Automatas Finitos Deterministicos");
 		this.ctrlVentana = ctrlVentana;
-		this.Paso = 0;
+		//ctrlVentana.funciona(); 
+		this.paso = 0;
 		// Iniciar los atributos basicos del jframe;
-		// this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		this.setBounds(0, 0, java.awt.GraphicsEnvironment
 				.getLocalGraphicsEnvironment().getMaximumWindowBounds().width,
 				java.awt.GraphicsEnvironment.getLocalGraphicsEnvironment()
@@ -79,7 +80,6 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.setLayout(null);
 
 		initLadoIzquierdo();
-		initLadoDerecho();
 		this.setVisible(true);
 	}
 
@@ -89,7 +89,12 @@ public class VentanaPrincipal extends JFrame {
 		JtfdEstadosPorUsuario[0].setBounds(20, 20, 40, 20);
 		contentPane.add(JtfdEstadosPorUsuario[0]);
 		JtfdEstadosPorUsuario[1] = new JFormattedTextField();
-		JtfdEstadosPorUsuario[1].setBounds(20, 40, 40, 20);
+		JtfdEstadosPorUsuario[1].setBounds(
+				JtfdEstadosPorUsuario[0].getX(),
+				JtfdEstadosPorUsuario[0].getY()
+						+ JtfdEstadosPorUsuario[0].getHeight(),
+				JtfdEstadosPorUsuario[0].getWidth(),
+				JtfdEstadosPorUsuario[0].getHeight());
 		contentPane.add(JtfdEstadosPorUsuario[1]);
 		agregarEventoEstadosUsuario();
 
@@ -163,11 +168,58 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void initLadoDerecho() {
-		JlblEstadosPorUsuario = new JLabel[2];
-		JlblEstadosPorUsuario[0] = new JLabel("Hola");
-		JlblEstadosPorUsuario[0].setBounds(100, 100, 40, 20);
-		// this.getContentPane().add(JlblEstadosPorUsuario[0]);
+		Vector<String> auxEstados = ctrlVentana.getEstados();
+		JlblEstadosPorUsuario[0] = new JLabel();
+		JlblEstadosPorUsuario[0].setText(auxEstados.elementAt(0));
+		JlblEstadosPorUsuario[0].setBounds(contentPane.getWidth() - 400, 20,
+				40, 20);
+		contentPane.add(JlblEstadosPorUsuario[0]);
+		for (int i = 1; i < auxEstados.size(); i++) {
+			JlblEstadosPorUsuario[i] = new JLabel();
+			JlblEstadosPorUsuario[i].setText(auxEstados.elementAt(i));
+			JlblEstadosPorUsuario[i].setBounds(
+					JlblEstadosPorUsuario[i - 1].getX(),
+					JlblEstadosPorUsuario[i - 1].getY()
+							+ JlblEstadosPorUsuario[i - 1].getHeight(),
+					JlblEstadosPorUsuario[i - 1].getWidth(),
+					JlblEstadosPorUsuario[i - 1].getHeight());
+			contentPane.add(JlblEstadosPorUsuario[i]);
+		}
 
+		Vector<String> auxSimbolos = ctrlVentana.getSimbolos();
+		JlblSimbolosPorUsuario[0] = new JLabel();
+		JlblSimbolosPorUsuario[0].setText(auxSimbolos.elementAt(0));
+		JlblSimbolosPorUsuario[0].setBounds(
+				JlblEstadosPorUsuario[0].getX()
+						+ JlblEstadosPorUsuario[0].getWidth(),
+				JlblEstadosPorUsuario[0].getY()
+						- JlblEstadosPorUsuario[0].getHeight(),
+				JlblEstadosPorUsuario[0].getWidth(),
+				JlblEstadosPorUsuario[0].getHeight());
+		contentPane.add(JlblSimbolosPorUsuario[0]);
+		for (int i = 0; i < auxSimbolos.size(); i++) {
+			JlblSimbolosPorUsuario[i] = new JLabel();
+			JlblSimbolosPorUsuario[i].setText(auxSimbolos.elementAt(i));
+			JlblSimbolosPorUsuario[i].setBounds(
+					JlblSimbolosPorUsuario[i - 1].getX()
+							+ JlblSimbolosPorUsuario[i - 1].getWidth(),
+					JlblSimbolosPorUsuario[i - 1].getY(),
+					JlblSimbolosPorUsuario[i - 1].getWidth(),
+					JlblSimbolosPorUsuario[i - 1].getHeight());
+			contentPane.add(JlblSimbolosPorUsuario[i]);
+		}
+
+		String[][] auxTransiciones = ctrlVentana.getTransiciones();
+		JtableTransicionesPorUsuario = new JTable(auxTransiciones, null);
+		JtableTransicionesPorUsuario.setBounds(JlblEstadosPorUsuario[0].getX()
+				+ JlblEstadosPorUsuario[0].getWidth(),
+				JlblEstadosPorUsuario[0].getY(),
+				JlblEstadosPorUsuario[0].getWidth() * auxTransiciones.length,
+				JlblEstadosPorUsuario[0].getHeight()
+						* auxTransiciones[0].length);
+		contentPane.add(JtableTransicionesPorUsuario);
+
+		contentPane.repaint();
 	}
 
 	private void agregrEventoAlVectorAceptaciones() {
@@ -202,8 +254,26 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private String[] generarCombinaciones() {
-		// metodo martin
-		return null;
+
+		String[] hn, hf, aux2, aux = new String[JtfdEstadosPorUsuario.length];
+		for (int i = 0; i < JtfdEstadosPorUsuario.length; i++) {
+			aux[i] = JtfdEstadosPorUsuario[i].getText();
+		}
+		hn = aux;
+		hf = aux;
+		for (int i = 0; i < aux.length; i++) {
+			for (int j = 0; j < hn.length; j++) {
+				aux2 = hf;
+				hf = new String[aux2.length + 1];
+				for (int j2 = 0; j2 < aux2.length; j2++) {
+					hf[j2] = aux2[j2];
+				}
+				hf[hf.length - 1] = aux[i] + hn[j];
+
+			}
+		}
+
+		return hf;
 	}
 
 	private void agregarEventoEstadosUsuario() {
@@ -341,9 +411,9 @@ public class VentanaPrincipal extends JFrame {
 				.setBounds(
 						JbtnSimplifcar.getX(),
 						JbtnSimplifcar.getY()
-								+ JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 2]
+								+ JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 1]
 										.getHeight(),
-						JbtnSimplifcar.getWidth(), JbtnSIguiente.getHeight());
+						JbtnSimplifcar.getWidth(), JbtnSimplifcar.getHeight());
 
 	}
 
@@ -378,18 +448,18 @@ public class VentanaPrincipal extends JFrame {
 		}
 		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
 			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1] = new JComboBox();
-			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1]
-					.setBounds(
-							JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-									.getX(),
-							JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-									.getY()
-									+ JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-											.getHeight(),
-							JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-									.getWidth(),
-							JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-									.getHeight());
+			//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1]
+					//.setBounds(
+							//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
+								//	.getX(),
+							//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
+								//	.getY()
+									//+ JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
+										//	.getHeight(),
+							//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
+								//	.getWidth(),
+							//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
+								//	.getHeight());
 			contentPane
 					.add(JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1]);
 		}
@@ -423,18 +493,31 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void ObtenerAFD() {
-		Vector<Boolean> aceptaciones = null;
+		Vector<Boolean> aceptaciones = new Vector<>();
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
-			if(JtbtnAceptacionesUsuario[i].getText().equals("0")){
+			if (JtbtnAceptacionesUsuario[i].getText().equals("0")) {
 				aceptaciones.add(false);
-			}else{
+			} else {
 				aceptaciones.add(true);
 			}
 		}
-		Vector<String> estados = null;
-		Vector<String> simbolos = null;
-		String[][] matrizTransiciones = null;
-		ctrlVentana.simplificar(estados, matrizTransiciones, simbolos, aceptaciones);
-
+		Vector<String> estados = new Vector<>();
+		for (int i = 0; i < JtfdEstadosPorUsuario.length; i++) {
+			estados.add(JtfdEstadosPorUsuario[i].getText());
+		}
+		Vector<String> simbolos = new Vector<>();
+		for (int i = 0; i < JtfdSimbolosPorUsuario.length; i++) {
+			simbolos.add(JtfdSimbolosPorUsuario[i].getText());
+		}
+		String[][] matrizTransiciones = new String[JcbMatrizTransicionesPorUsuario.length][JcbMatrizTransicionesPorUsuario[0].length];
+		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
+			for (int j = 0; j < JcbMatrizTransicionesPorUsuario[0].length; j++) {
+				matrizTransiciones[i][j] = JcbMatrizTransicionesPorUsuario[i][j]
+						.getSelectedItem().toString();
+			}
+		}
+		ctrlVentana.simplificar(estados, matrizTransiciones, simbolos,
+				aceptaciones);
+		initLadoDerecho();
 	}
 }

@@ -65,7 +65,7 @@ public class VentanaPrincipal extends JFrame {
 	public VentanaPrincipal(ControladorVentana ctrlVentana) {
 		super("Constructor de Automatas Finitos Deterministicos");
 		this.ctrlVentana = ctrlVentana;
-		//ctrlVentana.funciona(); 
+		// ctrlVentana.funciona();
 		this.paso = 0;
 		// Iniciar los atributos basicos del jframe;
 		this.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -425,14 +425,12 @@ public class VentanaPrincipal extends JFrame {
 
 	private void moverArrayDeAeptaciones() {
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
-			JtbtnAceptacionesUsuario[i]
-					.setBounds(
-							JtbtnAceptacionesUsuario[0].getX()
-									+ JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i]
-											.getWidth(),
-							JtbtnAceptacionesUsuario[0].getY(),
-							JtbtnAceptacionesUsuario[0].getWidth(),
-							JtbtnAceptacionesUsuario[0].getHeight());
+			JtbtnAceptacionesUsuario[i].setBounds(
+					JtbtnAceptacionesUsuario[i].getX()
+							+ JcbMatrizTransicionesPorUsuario[0][0].getWidth(),
+					JtbtnAceptacionesUsuario[i].getY(),
+					JtbtnAceptacionesUsuario[i].getWidth(),
+					JtbtnAceptacionesUsuario[i].getHeight());
 		}
 		contentPane.repaint();
 	}
@@ -447,24 +445,12 @@ public class VentanaPrincipal extends JFrame {
 			}
 		}
 		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
+			System.out.println(i+","+JcbMatrizTransicionesPorUsuario[0].length);
 			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1] = new JComboBox();
-			//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1]
-					//.setBounds(
-							//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-								//	.getX(),
-							//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-								//	.getY()
-									//+ JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-										//	.getHeight(),
-							//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-								//	.getWidth(),
-							//JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 2]
-								//	.getHeight());
-			contentPane
-					.add(JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1]);
 		}
 		llenarOpcionesMatrizTransiciones();
 		contentPane.repaint();
+
 	}
 
 	private void agregarSimboloPorUsuario() {

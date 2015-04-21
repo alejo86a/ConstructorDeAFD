@@ -59,7 +59,7 @@ public class AutomataFinito {
 
 	public void Simplifique() {
 		convierteAAFD();
-		eliminarExtraños();
+		eliminarExtranos();
 		hallarEquivalentes();
 	}
 
@@ -74,10 +74,10 @@ public class AutomataFinito {
 	
 	/**
 	 * Metodo implementado en el metodo "Simplifique",su funcion es eliminar los posibles estados 
-	 * extraños que se puedan encontrar en el Af ingresado por el usuario.
+	 * extraï¿½os que se puedan encontrar en el Af ingresado por el usuario.
 	 */
 
-	private void eliminarExtraños() {
+	private void eliminarExtranos() {
 		// TODO Auto-generated method stub
 
 	}

@@ -1,8 +1,9 @@
 /**
- * Paquete que contiene todas las vistas de la aplicación 
+ * Paquete que contiene todas las vistas de la aplicaciï¿½n 
  */
 package co.edu.udea.constructorDeAFD.vista;
 
+import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -14,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -22,7 +24,7 @@ import javax.swing.JToggleButton;
 import co.edu.udea.constructorDeAFD.controlador.ControladorVentana;
 
 /**
- * Jframe que contiene los componenetes graficos de la aplicación
+ * Jframe que contiene los componenetes graficos de la aplicaciï¿½n
  * 
  * @author alejandro & Martin
  *
@@ -43,6 +45,7 @@ public class VentanaPrincipal extends JFrame {
 	private JFormattedTextField[] JtfdSimbolosPorUsuario;
 	private JToggleButton[] JtbtnAceptacionesUsuario;
 	private JButton JbtnSimplifcar;
+	private JButton JbtnReiniciar;
 	private JButton JbtnNuevaFila;
 	private JButton JbtnNuevaColumna;
 	/**
@@ -57,6 +60,15 @@ public class VentanaPrincipal extends JFrame {
 	private JButton JbtnSolucionado;
 	private JFormattedTextField JtfdHilera;
 	private JLabel JlblRespuesta;
+	/**
+	 * Contantes
+	 */
+	private int XINICIAL=20;
+	private int YINICIAL=0+80;
+	private int WIDTHELEMENTO=40+50;
+	private int WIDTHCOMBO=60+50;
+	private int HEIGHTELEMENTO=20+50;
+	private Font FUENTE = new Font("Arial", 0, 36);
 
 	/**
 	 * 
@@ -84,55 +96,69 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void initLadoIzquierdo() {
+		//Agrego primeros textfield de estados
 		JtfdEstadosPorUsuario = new JFormattedTextField[2];
 		JtfdEstadosPorUsuario[0] = new JFormattedTextField();
-		JtfdEstadosPorUsuario[0].setBounds(20, 20, 40, 20);
+		JtfdEstadosPorUsuario[0].setBounds(XINICIAL, YINICIAL+HEIGHTELEMENTO, WIDTHELEMENTO, HEIGHTELEMENTO);
+		JtfdEstadosPorUsuario[0].setFont(FUENTE);
 		contentPane.add(JtfdEstadosPorUsuario[0]);
+		
 		JtfdEstadosPorUsuario[1] = new JFormattedTextField();
 		JtfdEstadosPorUsuario[1].setBounds(
-				JtfdEstadosPorUsuario[0].getX(),
+				XINICIAL,
 				JtfdEstadosPorUsuario[0].getY()
 						+ JtfdEstadosPorUsuario[0].getHeight(),
-				JtfdEstadosPorUsuario[0].getWidth(),
-				JtfdEstadosPorUsuario[0].getHeight());
+				WIDTHELEMENTO,
+				HEIGHTELEMENTO);
+		JtfdEstadosPorUsuario[1].setFont(FUENTE);
 		contentPane.add(JtfdEstadosPorUsuario[1]);
+		
 		agregarEventoEstadosUsuario();
-
+		//Agrego primeros textfield de simbolos
 		JtfdSimbolosPorUsuario = new JFormattedTextField[2];
 		JtfdSimbolosPorUsuario[0] = new JFormattedTextField();
-		JtfdSimbolosPorUsuario[0].setBounds(60, 0, 60, 20);
+		JtfdSimbolosPorUsuario[0].setBounds(XINICIAL+WIDTHELEMENTO, YINICIAL, WIDTHCOMBO, HEIGHTELEMENTO);
+		JtfdSimbolosPorUsuario[0].setFont(FUENTE);
 		contentPane.add(JtfdSimbolosPorUsuario[0]);
+		
 		JtfdSimbolosPorUsuario[1] = new JFormattedTextField();
-		JtfdSimbolosPorUsuario[1].setBounds(120, 0, 60, 20);
+		JtfdSimbolosPorUsuario[1].setBounds(JtfdSimbolosPorUsuario[0].getX()+WIDTHCOMBO, YINICIAL, WIDTHCOMBO, HEIGHTELEMENTO);
+		JtfdSimbolosPorUsuario[1].setFont(FUENTE);
 		contentPane.add(JtfdSimbolosPorUsuario[1]);
-
+		//Agrego primeros combobox de transiciones
 		JcbMatrizTransicionesPorUsuario = new JComboBox[2][2];
-		int x = 60, y = 20;
+		int x = XINICIAL+WIDTHELEMENTO, y = YINICIAL+HEIGHTELEMENTO;
 		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
 			for (int j = 0; j < JcbMatrizTransicionesPorUsuario[0].length; j++) {
 				JcbMatrizTransicionesPorUsuario[i][j] = new JComboBox();
-				JcbMatrizTransicionesPorUsuario[i][j].setBounds(x, y, 60, 20);
+				JcbMatrizTransicionesPorUsuario[i][j].setBounds(x, y, WIDTHCOMBO, HEIGHTELEMENTO);
+				JcbMatrizTransicionesPorUsuario[i][j].setFont(FUENTE);
 				contentPane.add(JcbMatrizTransicionesPorUsuario[i][j]);
-				x += 60;
+				x += WIDTHCOMBO;
 			}
-			x = 60;
-			y = y + 20;
+			x = XINICIAL+WIDTHELEMENTO;
+			y = y + HEIGHTELEMENTO;
 		}
+		
 		llenarOpcionesMatrizTransiciones();
-
+		//Agrego primeros toggleButton de aceptaciones
 		JtbtnAceptacionesUsuario = new JToggleButton[2];
 		JtbtnAceptacionesUsuario[0] = new JToggleButton();
-		JtbtnAceptacionesUsuario[0].setBounds(180, 20, 60, 20);
+		JtbtnAceptacionesUsuario[0].setBounds(XINICIAL+WIDTHELEMENTO+WIDTHCOMBO*2, YINICIAL+HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
 		JtbtnAceptacionesUsuario[0].setText("0");
+		JtbtnAceptacionesUsuario[0].setFont(FUENTE);
 		contentPane.add(JtbtnAceptacionesUsuario[0]);
+		
 		JtbtnAceptacionesUsuario[1] = new JToggleButton();
-		JtbtnAceptacionesUsuario[1].setBounds(180, 40, 60, 20);
+		JtbtnAceptacionesUsuario[1].setBounds(XINICIAL+WIDTHELEMENTO+WIDTHCOMBO*2, JtbtnAceptacionesUsuario[0].getY()+HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
 		JtbtnAceptacionesUsuario[1].setText("0");
+		JtbtnAceptacionesUsuario[1].setFont(FUENTE);
 		contentPane.add(JtbtnAceptacionesUsuario[1]);
+		
 		agregrEventoAlVectorAceptaciones();
-
+		//Agrego boton de anadir fila
 		JbtnNuevaFila = new JButton();
-		JbtnNuevaFila.setBounds(40, 120, 80, 20);
+		JbtnNuevaFila.setBounds(40, 30, 120, 20);
 		JbtnNuevaFila.addActionListener(new ActionListener() {
 
 			@Override
@@ -142,8 +168,9 @@ public class VentanaPrincipal extends JFrame {
 		});
 		JbtnNuevaFila.setText("+ Fila");
 		contentPane.add(JbtnNuevaFila);
+		
 		JbtnNuevaColumna = new JButton();
-		JbtnNuevaColumna.setBounds(140, 120, 80, 20);
+		JbtnNuevaColumna.setBounds(180, 30, 120, 20);
 		JbtnNuevaColumna.addActionListener(new ActionListener() {
 
 			@Override
@@ -153,18 +180,31 @@ public class VentanaPrincipal extends JFrame {
 		});
 		JbtnNuevaColumna.setText("+ Columna");
 		contentPane.add(JbtnNuevaColumna);
+		
 		JbtnSimplifcar = new JButton();
-		JbtnSimplifcar.setBounds(80, 160, 80, 20);
+		JbtnSimplifcar.setBounds(320, 30, 120, 20);
 		JbtnSimplifcar.addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				ObtenerAFD();
+				obtenerAFD();
 			}
 
 		});
 		JbtnSimplifcar.setText("Simplificar");
 		contentPane.add(JbtnSimplifcar);
+		
+		JbtnReiniciar = new JButton();
+		JbtnReiniciar.setBounds(460, 30, 120, 20);
+		JbtnReiniciar.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				reiniciarAF();
+			}
+		});
+		JbtnReiniciar.setText("Reiniciar AF");
+		contentPane.add(JbtnReiniciar);
 	}
 
 	private void initLadoDerecho() {
@@ -298,11 +338,13 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void agregarFila() {
+		if(JtfdEstadosPorUsuario.length<12){
 		agregarEstadoPorUsuario();
 		agregarFilaDeTranscionesPorUsuario();
 		agregarAceptacionPorUsuario();
-		moverBotonesDeAgregar();
-
+		}else{
+			JOptionPane.showMessageDialog(null, "Cantidad maxima de estados alcanzada");
+		}
 	}
 
 	private void agregarAceptacionPorUsuario() {
@@ -327,6 +369,7 @@ public class VentanaPrincipal extends JFrame {
 								.getHeight());
 		JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1]
 				.setText("0");
+		JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1].setFont(FUENTE);
 		contentPane
 				.add(JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1]);
 		agregrEventoAlVectorAceptaciones();
@@ -358,6 +401,7 @@ public class VentanaPrincipal extends JFrame {
 									.getWidth(),
 							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
 									.getHeight());
+			JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i].setFont(FUENTE);
 			contentPane
 					.add(JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i]);
 		}
@@ -385,42 +429,21 @@ public class VentanaPrincipal extends JFrame {
 								.getWidth(),
 						JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 2]
 								.getHeight());
+		JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 1].setFont(FUENTE);
 		contentPane
 				.add(JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 1]);
 		agregarEventoEstadosUsuario();
 		contentPane.repaint();
 	}
 
-	private void moverBotonesDeAgregar() {
-		JbtnNuevaFila
-				.setBounds(
-						JbtnNuevaFila.getX(),
-						JbtnNuevaFila.getY()
-								+ JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 2]
-										.getHeight(), JbtnNuevaFila.getWidth(),
-						JbtnNuevaFila.getHeight());
-		JbtnNuevaColumna
-				.setBounds(
-						JbtnNuevaColumna.getX(),
-						JbtnNuevaColumna.getY()
-								+ JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 2]
-										.getHeight(),
-						JbtnNuevaColumna.getWidth(),
-						JbtnNuevaColumna.getHeight());
-		JbtnSimplifcar
-				.setBounds(
-						JbtnSimplifcar.getX(),
-						JbtnSimplifcar.getY()
-								+ JtfdEstadosPorUsuario[JtfdEstadosPorUsuario.length - 1]
-										.getHeight(),
-						JbtnSimplifcar.getWidth(), JbtnSimplifcar.getHeight());
-
-	}
-
 	private void agregarColumna() {
+		if(JtfdSimbolosPorUsuario.length<5){
 		agregarSimboloPorUsuario();
-		agregarColumnaDeTransicionesDeUsuario();
 		moverArrayDeAeptaciones();
+		//agregarColumnaDeTransicionesDeUsuario();
+		}else{
+			JOptionPane.showMessageDialog(null, "Cantidad maxima de simbolos alcanzada");
+		}
 	}
 
 	private void moverArrayDeAeptaciones() {
@@ -473,12 +496,21 @@ public class VentanaPrincipal extends JFrame {
 								.getWidth(),
 						JtfdSimbolosPorUsuario[JtfdSimbolosPorUsuario.length - 2]
 								.getHeight());
+		JtfdSimbolosPorUsuario[JtfdSimbolosPorUsuario.length - 1].setFont(FUENTE);
 		contentPane
 				.add(JtfdSimbolosPorUsuario[JtfdSimbolosPorUsuario.length - 1]);
 		contentPane.repaint();
 	}
+	
 
-	private void ObtenerAFD() {
+
+	private void reiniciarAF() {
+		contentPane.removeAll();
+		contentPane.repaint();
+		initLadoIzquierdo();
+	}
+
+	private void obtenerAFD() {
 		Vector<Boolean> aceptaciones = new Vector<>();
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
 			if (JtbtnAceptacionesUsuario[i].getText().equals("0")) {

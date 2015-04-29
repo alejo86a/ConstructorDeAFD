@@ -488,6 +488,7 @@ public class VentanaPrincipal extends JFrame {
 		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
 			System.out.println(i+","+JcbMatrizTransicionesPorUsuario[0].length);
 			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1] = new JComboBox();
+		
 		}
 		llenarOpcionesMatrizTransiciones();
 		contentPane.repaint();

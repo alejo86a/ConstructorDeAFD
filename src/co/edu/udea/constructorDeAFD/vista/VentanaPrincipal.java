@@ -3,9 +3,12 @@
  */
 package co.edu.udea.constructorDeAFD.vista;
 
+import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.ComponentAdapter;
+import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
@@ -17,6 +20,7 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
@@ -63,11 +67,11 @@ public class VentanaPrincipal extends JFrame {
 	/**
 	 * Contantes
 	 */
-	private int XINICIAL=20;
-	private int YINICIAL=0+80;
-	private int WIDTHELEMENTO=40+50;
-	private int WIDTHCOMBO=60+50;
-	private int HEIGHTELEMENTO=20+50;
+	private int XINICIAL;
+	private int YINICIAL;
+	private int WIDTHELEMENTO;
+	private int WIDTHCOMBO;
+	private int HEIGHTELEMENTO;
 	private Font FUENTE = new Font("Arial", 0, 36);
 
 	/**
@@ -88,11 +92,25 @@ public class VentanaPrincipal extends JFrame {
 
 		// iniciar los atributos basicos del panel principal
 		contentPane = new JPanel();
-		this.setContentPane(contentPane);
+		//this.setContentPane(contentPane);
+		JScrollPane scroller = new JScrollPane(contentPane);
+		this.getContentPane().add(scroller, BorderLayout.CENTER);
+		this.getContentPane().setBounds(this.getContentPane().getX(), this.getContentPane().getY(), this.getContentPane().getWidth()-10, this.getContentPane().getHeight()-10);
 		contentPane.setLayout(null);
 
+		iniciarConstantesRelativas();
 		initLadoIzquierdo();
+		
 		this.setVisible(true);
+		
+	}
+
+	private void iniciarConstantesRelativas() {
+		XINICIAL=(int) Math.floor(1.389*this.getWidth()/100);
+		YINICIAL=(int) Math.floor(9.142857143*this.getHeight()/100);
+		WIDTHELEMENTO=(int) Math.floor(5.208333333*this.getWidth()/100);
+		WIDTHCOMBO=(int) Math.floor(6.597222222*this.getWidth()/100);
+		HEIGHTELEMENTO=(int) Math.floor(6.285714286*this.getHeight()/100);
 	}
 
 	private void initLadoIzquierdo() {
@@ -338,13 +356,13 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void agregarFila() {
-		if(JtfdEstadosPorUsuario.length<12){
+		//if(JtfdEstadosPorUsuario.length<12){
 		agregarEstadoPorUsuario();
 		agregarFilaDeTranscionesPorUsuario();
 		agregarAceptacionPorUsuario();
-		}else{
-			JOptionPane.showMessageDialog(null, "Cantidad maxima de estados alcanzada");
-		}
+		//}else{
+		//	JOptionPane.showMessageDialog(null, "Cantidad maxima de estados alcanzada");
+		//}
 	}
 
 	private void agregarAceptacionPorUsuario() {

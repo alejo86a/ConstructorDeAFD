@@ -44,7 +44,7 @@ public class VentanaPrincipal extends JFrame {
 	/**
 	 * Lado izquierdo
 	 */
-	private JComboBox<String>[][] JcbMatrizTransicionesPorUsuario;
+	private static JComboBox<String>[][] JcbMatrizTransicionesPorUsuario;
 	private JFormattedTextField[] JtfdEstadosPorUsuario;
 	private JFormattedTextField[] JtfdSimbolosPorUsuario;
 	private JToggleButton[] JtbtnAceptacionesUsuario;
@@ -458,7 +458,7 @@ public class VentanaPrincipal extends JFrame {
 		if(JtfdSimbolosPorUsuario.length<5){
 		agregarSimboloPorUsuario();
 		moverArrayDeAeptaciones();
-		//agregarColumnaDeTransicionesDeUsuario();
+		agregarColumnaDeTransicionesDeUsuario();
 		}else{
 			JOptionPane.showMessageDialog(null, "Cantidad maxima de simbolos alcanzada");
 		}
@@ -488,6 +488,8 @@ public class VentanaPrincipal extends JFrame {
 		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
 			System.out.println(i+","+JcbMatrizTransicionesPorUsuario[0].length);
 			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1] = new JComboBox();
+			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1].setBounds(500, 500+i*HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
+			contentPane.add(JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1]);
 		
 		}
 		llenarOpcionesMatrizTransiciones();

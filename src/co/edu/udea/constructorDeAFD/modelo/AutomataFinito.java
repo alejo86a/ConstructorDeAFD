@@ -11,10 +11,10 @@ import java.util.Vector;
  */
 public class AutomataFinito {
 
-	private Vector<String> estados;// su longitud es la cantidad de estados
-	private Vector<Vector> transiciones;// su longitud es la cantid de simbolos
-	Vector<String> simbolos;// su longitud es la cantid de simbolos
-	private Vector<Boolean> aceptaciones;// su longitud es la cantidad de
+	private Vector<String> estados = new Vector<String>();// su longitud es la cantidad de estados
+	private Vector<Vector> transiciones = new Vector<Vector>();// su longitud es la cantid de simbolos
+	Vector<String> simbolos = new Vector<String>();// su longitud es la cantid de simbolos
+	private Vector<Boolean> aceptaciones = new Vector<Boolean>();// su longitud es la cantidad de
 											// estados
 	private int posicion;// su valor maximo es la cantidad de estados
 
@@ -43,7 +43,7 @@ public class AutomataFinito {
 		this.posicion = 0;
 
 		for (int i = 0; i < matrizTransiciones[0].length; i++) {
-			Vector<String> aux = null;
+			Vector<String> aux = new Vector<String>();
 			transiciones.add(i, aux);
 			for (int j = 0; j < matrizTransiciones.length; j++) {
 				aux.add(j, matrizTransiciones[i][j]);

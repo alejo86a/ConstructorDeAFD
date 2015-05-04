@@ -35,7 +35,6 @@ import co.edu.udea.constructorDeAFD.controlador.ControladorVentana;
  */
 public class VentanaPrincipal extends JFrame {
 
-	private ControladorVentana ctrlVentana;
 	/**
 	 * 
 	 */
@@ -78,9 +77,8 @@ public class VentanaPrincipal extends JFrame {
 	 * 
 	 * @param ctrlVentana
 	 */
-	public VentanaPrincipal(ControladorVentana ctrlVentana) {
+	public VentanaPrincipal() {
 		super("Constructor de Automatas Finitos Deterministicos");
-		this.ctrlVentana = ctrlVentana;
 		// ctrlVentana.funciona();
 		this.paso = 0;
 		// Iniciar los atributos basicos del jframe;
@@ -226,7 +224,11 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void initLadoDerecho() {
-		Vector<String> auxEstados = ctrlVentana.getEstados();
+		
+	}
+	
+	private void llenarLadoDerecho(){
+		Vector<String> auxEstados = ControladorVentana.getInstance().getEstados();
 		JlblEstadosPorUsuario[0] = new JLabel();
 		JlblEstadosPorUsuario[0].setText(auxEstados.elementAt(0));
 		JlblEstadosPorUsuario[0].setBounds(contentPane.getWidth() - 400, 20,
@@ -244,7 +246,7 @@ public class VentanaPrincipal extends JFrame {
 			contentPane.add(JlblEstadosPorUsuario[i]);
 		}
 
-		Vector<String> auxSimbolos = ctrlVentana.getSimbolos();
+		Vector<String> auxSimbolos = ControladorVentana.getInstance().getSimbolos();
 		JlblSimbolosPorUsuario[0] = new JLabel();
 		JlblSimbolosPorUsuario[0].setText(auxSimbolos.elementAt(0));
 		JlblSimbolosPorUsuario[0].setBounds(
@@ -267,7 +269,7 @@ public class VentanaPrincipal extends JFrame {
 			contentPane.add(JlblSimbolosPorUsuario[i]);
 		}
 
-		String[][] auxTransiciones = ctrlVentana.getTransiciones();
+		String[][] auxTransiciones = ControladorVentana.getInstance().getTransiciones();
 		JtableTransicionesPorUsuario = new JTable(auxTransiciones, null);
 		JtableTransicionesPorUsuario.setBounds(JlblEstadosPorUsuario[0].getX()
 				+ JlblEstadosPorUsuario[0].getWidth(),
@@ -488,7 +490,8 @@ public class VentanaPrincipal extends JFrame {
 		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
 			System.out.println(i+","+JcbMatrizTransicionesPorUsuario[0].length);
 			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1] = new JComboBox();
-			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1].setBounds(500, 500+i*HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
+			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1].setBounds(JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length-2].getX()+WIDTHCOMBO, YINICIAL+HEIGHTELEMENTO+i*HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
+			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1].setFont(FUENTE);
 			contentPane.add(JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1]);
 		
 		}
@@ -555,8 +558,11 @@ public class VentanaPrincipal extends JFrame {
 						.getSelectedItem().toString();
 			}
 		}
-		ctrlVentana.simplificar(estados, matrizTransiciones, simbolos,
+		ControladorVentana.getInstance().simplificar(estados, matrizTransiciones, simbolos,
 				aceptaciones);
 		initLadoDerecho();
+	}
+	public static void main(String args[]){
+		VentanaPrincipal vp = new VentanaPrincipal();
 	}
 }

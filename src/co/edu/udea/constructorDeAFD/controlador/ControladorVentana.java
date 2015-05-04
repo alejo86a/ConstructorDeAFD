@@ -14,19 +14,31 @@ import co.edu.udea.constructorDeAFD.vista.VentanaPrincipal;
  */
 public class ControladorVentana {
 
+	
+	private static ControladorVentana instancia = new ControladorVentana();
+	
+	
 	private VentanaPrincipal guiPrincipal;
 
 	private AutomataFinito aFUsuario;
 	private AutomataFinito aFSimplicado;
 	private int[][] pasoApaso;
 
+	
+	public ControladorVentana(){
+		
+	}
 	/**
 	 * Recibe la instancia unica de la ventana principal
 	 * 
 	 * @param guiPrincipal
 	 */
-	public ControladorVentana(VentanaPrincipal guiPrincipal) {
+	private ControladorVentana(VentanaPrincipal guiPrincipal) {
 		this.guiPrincipal = guiPrincipal;
+	}
+	
+	public static ControladorVentana getInstance(){
+		return instancia;
 	}
 
 	public void simplificar(Vector<String> estados,
@@ -36,6 +48,7 @@ public class ControladorVentana {
 				aceptaciones);
 		aFSimplicado = aFUsuario;
 		aFSimplicado.Simplifique();
+		System.out.println("LLame controlador");
 	}
 
 	public Vector<String> getSimbolos() {

@@ -7,8 +7,6 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
@@ -21,9 +19,11 @@ import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
+import javax.swing.JTabbedPane;
 import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JToggleButton;
+import javax.swing.table.DefaultTableModel;
 
 import co.edu.udea.constructorDeAFD.controlador.ControladorVentana;
 
@@ -39,6 +39,7 @@ public class VentanaPrincipal extends JFrame {
 	 * 
 	 */
 	private JPanel contentPane;
+	private JPanel secondPane;
 	private int paso;
 	/**
 	 * Lado izquierdo
@@ -535,6 +536,8 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void obtenerAFD() {
+		contentPane.setVisible(false);
+		agregarSegundoPanel();
 		Vector<Boolean> aceptaciones = new Vector<>();
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
 			if (JtbtnAceptacionesUsuario[i].getText().equals("0")) {
@@ -562,6 +565,33 @@ public class VentanaPrincipal extends JFrame {
 				aceptaciones);
 		initLadoDerecho();
 	}
+	private void agregarSegundoPanel() {
+		
+		
+		secondPane = new JPanel();
+		this.setContentPane(secondPane);
+		int x=30;
+		int y= 40;
+		secondPane.setLayout(null);
+		JTextField[][] matrizNueva = new JTextField[5][5];
+		for(int i =0;i<matrizNueva.length;i++){
+			for (int j=0;j<matrizNueva.length;j++){
+			matrizNueva[i][j].setText("Hola");
+			matrizNueva[i][j].setBounds(x, y, 30, 40);
+			secondPane.add(matrizNueva[i][j]);
+			x=x+30;
+			y=y+40;
+		
+			}
+		}
+		secondPane.setVisible(true);
+		repaint();
+
+	
+		
+		
+	}
+
 	public static void main(String args[]){
 		VentanaPrincipal vp = new VentanaPrincipal();
 	}

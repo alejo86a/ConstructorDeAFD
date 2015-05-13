@@ -61,7 +61,7 @@ public class ControladorVentana {
 
 	public String[][] getTransiciones() {
 		return aFSimplicado.getTransiciones();
-	}
+ }
 
 	public Vector<Integer> getPaso(int p) {
 		Vector<Integer> fila = null;

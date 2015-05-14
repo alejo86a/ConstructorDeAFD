@@ -316,7 +316,7 @@ public class VentanaPrincipal extends JFrame {
 
 	private String[] generarCombinaciones() {
 
-		String[] hn, hf, aux2, aux = new String[JtfdEstadosPorUsuario.length];
+		/**String[] hn, hf, aux2, aux = new String[JtfdEstadosPorUsuario.length];
 		for (int i = 0; i < JtfdEstadosPorUsuario.length; i++) {
 			aux[i] = JtfdEstadosPorUsuario[i].getText();
 		}
@@ -333,8 +333,30 @@ public class VentanaPrincipal extends JFrame {
 
 			}
 		}
-
-		return hf;
+	**/
+		String[] aux = new String[JtfdEstadosPorUsuario.length];
+		for (int i = 0; i < JtfdEstadosPorUsuario.length; i++) {
+			aux[i] = JtfdEstadosPorUsuario[i].getText();
+		}
+		String[] v = new String[aux.length];
+		for (int i = 0; i < v.length; i++) {
+			v[i] = aux[0];
+		}
+		combina(aux, v, 0, aux.length);
+		return aux;
+	}
+	
+	private void combina(String[] aux,String[] V,int i, int n){
+		if(i>n){
+			for (int j = 0; j < V.length; j++) {
+				System.out.print(V[j]);
+			}
+			System.out.println();
+		}else{
+			combina(aux,V,i+1,n);
+			V[i] = aux[(i+1)%(aux.length-1)];
+			combina(aux,V,i+1,n);
+		}
 	}
 
 	private void agregarEventoEstadosUsuario() {

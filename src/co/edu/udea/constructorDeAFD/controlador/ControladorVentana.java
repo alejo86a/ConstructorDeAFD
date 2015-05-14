@@ -48,7 +48,7 @@ public class ControladorVentana {
 				aceptaciones);
 		aFSimplicado = aFUsuario;
 		aFSimplicado.Simplifique();
-		System.out.println("LLame controlador");
+		aFSimplicado.imprimirAF();
 	}
 
 	public Vector<String> getSimbolos() {

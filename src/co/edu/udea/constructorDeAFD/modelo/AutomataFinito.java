@@ -13,7 +13,7 @@ public class AutomataFinito {
 
 	private Vector<String> estados = new Vector<String>();// su longitud es la cantidad de estados
 	private Vector<Vector> transiciones = new Vector<Vector>();// su longitud es la cantid de simbolos
-	Vector<String> simbolos = new Vector<String>();// su longitud es la cantid de simbolos
+	private Vector<String> simbolos = new Vector<String>();// su longitud es la cantid de simbolos
 	private Vector<Boolean> aceptaciones = new Vector<Boolean>();// su longitud es la cantidad de
 											// estados
 	private int posicion;// su valor maximo es la cantidad de estados
@@ -113,6 +113,25 @@ public class AutomataFinito {
 	public String[][] getTransiciones() {
 		String[][] matrizTransiciones = null;
 		return matrizTransiciones;
+	}
+
+	public void imprimirAF() {
+		System.out.print("  ");
+		for (int i = 0; i < simbolos.size(); i++) {
+			System.out.print(simbolos.elementAt(i)+" ");
+		}
+		System.out.println();
+		for (int i = 0; i < transiciones.size(); i++) {
+			System.out.print(estados.elementAt(i)+" ");
+			for (int j = 0; j < transiciones.elementAt(0).size(); j++) {
+				System.out.print(transiciones.elementAt(i).elementAt(j)+" ");
+			}
+			if(aceptaciones.elementAt(i)){
+				System.out.println("1");
+			}else{
+				System.out.println("0");
+			}
+		}
 	}
 
 }

@@ -536,8 +536,8 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void obtenerAFD() {
-		contentPane.setVisible(false);
-		agregarSegundoPanel();
+		//contentPane.setVisible(false);
+		//agregarSegundoPanel();
 		Vector<Boolean> aceptaciones = new Vector<>();
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
 			if (JtbtnAceptacionesUsuario[i].getText().equals("0")) {
@@ -563,7 +563,7 @@ public class VentanaPrincipal extends JFrame {
 		}
 		ControladorVentana.getInstance().simplificar(estados, matrizTransiciones, simbolos,
 				aceptaciones);
-		initLadoDerecho();
+		//initLadoDerecho();
 	}
 	private void agregarSegundoPanel() {
 		

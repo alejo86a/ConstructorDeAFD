@@ -342,7 +342,7 @@ public class VentanaPrincipal extends JFrame {
 		for (int i = 0; i < v.length; i++) {
 			v[i] = aux[0];
 		}
-		combina(aux, v, 0, aux.length);
+		combina(aux, v, 0, aux.length-1);
 		return aux;
 	}
 	
@@ -354,7 +354,7 @@ public class VentanaPrincipal extends JFrame {
 			System.out.println();
 		}else{
 			combina(aux,V,i+1,n);
-			V[i] = aux[(i+1)%(aux.length-1)];
+			V[i] = aux[(i-1)%(aux.length)];
 			combina(aux,V,i+1,n);
 		}
 	}

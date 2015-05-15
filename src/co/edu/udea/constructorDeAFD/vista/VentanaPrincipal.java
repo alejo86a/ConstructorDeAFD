@@ -7,6 +7,8 @@ import java.awt.BorderLayout;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
@@ -26,6 +28,7 @@ import javax.swing.JToggleButton;
 import javax.swing.table.DefaultTableModel;
 
 import co.edu.udea.constructorDeAFD.controlador.ControladorVentana;
+import co.edu.udea.constructorDeAFD.util.Validar;
 
 /**
  * Jframe que contiene los componenetes graficos de la aplicaci�n
@@ -44,7 +47,7 @@ public class VentanaPrincipal extends JFrame {
 	/**
 	 * Lado izquierdo
 	 */
-	private static JComboBox<String>[][] JcbMatrizTransicionesPorUsuario;
+	private JFormattedTextField[][] JftdMatrizTransicionesPorUsuario;
 	private JFormattedTextField[] JtfdEstadosPorUsuario;
 	private JFormattedTextField[] JtfdSimbolosPorUsuario;
 	private JToggleButton[] JtbtnAceptacionesUsuario;
@@ -91,89 +94,99 @@ public class VentanaPrincipal extends JFrame {
 
 		// iniciar los atributos basicos del panel principal
 		contentPane = new JPanel();
-		//this.setContentPane(contentPane);
+		// this.setContentPane(contentPane);
 		JScrollPane scroller = new JScrollPane(contentPane);
 		this.getContentPane().add(scroller, BorderLayout.CENTER);
-		this.getContentPane().setBounds(this.getContentPane().getX(), this.getContentPane().getY(), this.getContentPane().getWidth()-10, this.getContentPane().getHeight()-10);
+		this.getContentPane().setBounds(this.getContentPane().getX(),
+				this.getContentPane().getY(),
+				this.getContentPane().getWidth() - 10,
+				this.getContentPane().getHeight() - 10);
 		contentPane.setLayout(null);
 
 		iniciarConstantesRelativas();
 		initLadoIzquierdo();
-		
+
 		this.setVisible(true);
-		
+
 	}
 
 	private void iniciarConstantesRelativas() {
-		XINICIAL=(int) Math.floor(1.389*this.getWidth()/100);
-		YINICIAL=(int) Math.floor(9.142857143*this.getHeight()/100);
-		WIDTHELEMENTO=(int) Math.floor(5.208333333*this.getWidth()/100);
-		WIDTHCOMBO=(int) Math.floor(6.597222222*this.getWidth()/100);
-		HEIGHTELEMENTO=(int) Math.floor(6.285714286*this.getHeight()/100);
+		XINICIAL = (int) Math.floor(1.389 * this.getWidth() / 100);
+		YINICIAL = (int) Math.floor(9.142857143 * this.getHeight() / 100);
+		WIDTHELEMENTO = (int) Math.floor(5.208333333 * this.getWidth() / 100);
+		WIDTHCOMBO = (int) Math.floor(6.597222222 * this.getWidth() / 100);
+		HEIGHTELEMENTO = (int) Math.floor(6.285714286 * this.getHeight() / 100);
 	}
 
 	private void initLadoIzquierdo() {
-		//Agrego primeros textfield de estados
+		// Agrego primeros textfield de estados
 		JtfdEstadosPorUsuario = new JFormattedTextField[2];
 		JtfdEstadosPorUsuario[0] = new JFormattedTextField();
-		JtfdEstadosPorUsuario[0].setBounds(XINICIAL, YINICIAL+HEIGHTELEMENTO, WIDTHELEMENTO, HEIGHTELEMENTO);
+		JtfdEstadosPorUsuario[0].setBounds(XINICIAL, YINICIAL + HEIGHTELEMENTO,
+				WIDTHELEMENTO, HEIGHTELEMENTO);
 		JtfdEstadosPorUsuario[0].setFont(FUENTE);
 		contentPane.add(JtfdEstadosPorUsuario[0]);
-		
+
 		JtfdEstadosPorUsuario[1] = new JFormattedTextField();
 		JtfdEstadosPorUsuario[1].setBounds(
 				XINICIAL,
 				JtfdEstadosPorUsuario[0].getY()
-						+ JtfdEstadosPorUsuario[0].getHeight(),
-				WIDTHELEMENTO,
+						+ JtfdEstadosPorUsuario[0].getHeight(), WIDTHELEMENTO,
 				HEIGHTELEMENTO);
 		JtfdEstadosPorUsuario[1].setFont(FUENTE);
 		contentPane.add(JtfdEstadosPorUsuario[1]);
-		
+
 		agregarEventoEstadosUsuario();
-		//Agrego primeros textfield de simbolos
+		// Agrego primeros textfield de simbolos
 		JtfdSimbolosPorUsuario = new JFormattedTextField[2];
 		JtfdSimbolosPorUsuario[0] = new JFormattedTextField();
-		JtfdSimbolosPorUsuario[0].setBounds(XINICIAL+WIDTHELEMENTO, YINICIAL, WIDTHCOMBO, HEIGHTELEMENTO);
+		JtfdSimbolosPorUsuario[0].setBounds(XINICIAL + WIDTHELEMENTO, YINICIAL,
+				WIDTHCOMBO, HEIGHTELEMENTO);
 		JtfdSimbolosPorUsuario[0].setFont(FUENTE);
 		contentPane.add(JtfdSimbolosPorUsuario[0]);
-		
+
 		JtfdSimbolosPorUsuario[1] = new JFormattedTextField();
-		JtfdSimbolosPorUsuario[1].setBounds(JtfdSimbolosPorUsuario[0].getX()+WIDTHCOMBO, YINICIAL, WIDTHCOMBO, HEIGHTELEMENTO);
+		JtfdSimbolosPorUsuario[1].setBounds(JtfdSimbolosPorUsuario[0].getX()
+				+ WIDTHCOMBO, YINICIAL, WIDTHCOMBO, HEIGHTELEMENTO);
 		JtfdSimbolosPorUsuario[1].setFont(FUENTE);
 		contentPane.add(JtfdSimbolosPorUsuario[1]);
-		//Agrego primeros combobox de transiciones
-		JcbMatrizTransicionesPorUsuario = new JComboBox[2][2];
-		int x = XINICIAL+WIDTHELEMENTO, y = YINICIAL+HEIGHTELEMENTO;
-		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
-			for (int j = 0; j < JcbMatrizTransicionesPorUsuario[0].length; j++) {
-				JcbMatrizTransicionesPorUsuario[i][j] = new JComboBox();
-				JcbMatrizTransicionesPorUsuario[i][j].setBounds(x, y, WIDTHCOMBO, HEIGHTELEMENTO);
-				JcbMatrizTransicionesPorUsuario[i][j].setFont(FUENTE);
-				contentPane.add(JcbMatrizTransicionesPorUsuario[i][j]);
+		// Agrego primeros combobox de transiciones
+		JftdMatrizTransicionesPorUsuario = new JFormattedTextField[2][2];
+		int x = XINICIAL + WIDTHELEMENTO, y = YINICIAL + HEIGHTELEMENTO;
+		for (int i = 0; i < JftdMatrizTransicionesPorUsuario.length; i++) {
+			for (int j = 0; j < JftdMatrizTransicionesPorUsuario[0].length; j++) {
+				JftdMatrizTransicionesPorUsuario[i][j] = new JFormattedTextField();
+				JftdMatrizTransicionesPorUsuario[i][j].setBounds(x, y,
+						WIDTHCOMBO, HEIGHTELEMENTO);
+				JftdMatrizTransicionesPorUsuario[i][j].setFont(FUENTE);
+				contentPane.add(JftdMatrizTransicionesPorUsuario[i][j]);
 				x += WIDTHCOMBO;
 			}
-			x = XINICIAL+WIDTHELEMENTO;
+			x = XINICIAL + WIDTHELEMENTO;
 			y = y + HEIGHTELEMENTO;
 		}
-		
-		llenarOpcionesMatrizTransiciones();
-		//Agrego primeros toggleButton de aceptaciones
+
+		agregarEventoMatrizTransiciones();
+		// Agrego primeros toggleButton de aceptaciones
 		JtbtnAceptacionesUsuario = new JToggleButton[2];
 		JtbtnAceptacionesUsuario[0] = new JToggleButton();
-		JtbtnAceptacionesUsuario[0].setBounds(XINICIAL+WIDTHELEMENTO+WIDTHCOMBO*2, YINICIAL+HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
+		JtbtnAceptacionesUsuario[0].setBounds(XINICIAL + WIDTHELEMENTO
+				+ WIDTHCOMBO * 2, YINICIAL + HEIGHTELEMENTO, WIDTHCOMBO,
+				HEIGHTELEMENTO);
 		JtbtnAceptacionesUsuario[0].setText("0");
 		JtbtnAceptacionesUsuario[0].setFont(FUENTE);
 		contentPane.add(JtbtnAceptacionesUsuario[0]);
-		
+
 		JtbtnAceptacionesUsuario[1] = new JToggleButton();
-		JtbtnAceptacionesUsuario[1].setBounds(XINICIAL+WIDTHELEMENTO+WIDTHCOMBO*2, JtbtnAceptacionesUsuario[0].getY()+HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
+		JtbtnAceptacionesUsuario[1].setBounds(XINICIAL + WIDTHELEMENTO
+				+ WIDTHCOMBO * 2, JtbtnAceptacionesUsuario[0].getY()
+				+ HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
 		JtbtnAceptacionesUsuario[1].setText("0");
 		JtbtnAceptacionesUsuario[1].setFont(FUENTE);
 		contentPane.add(JtbtnAceptacionesUsuario[1]);
-		
+
 		agregrEventoAlVectorAceptaciones();
-		//Agrego boton de anadir fila
+		// Agrego boton de anadir fila
 		JbtnNuevaFila = new JButton();
 		JbtnNuevaFila.setBounds(40, 30, 120, 20);
 		JbtnNuevaFila.addActionListener(new ActionListener() {
@@ -185,7 +198,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		JbtnNuevaFila.setText("+ Fila");
 		contentPane.add(JbtnNuevaFila);
-		
+
 		JbtnNuevaColumna = new JButton();
 		JbtnNuevaColumna.setBounds(180, 30, 120, 20);
 		JbtnNuevaColumna.addActionListener(new ActionListener() {
@@ -197,7 +210,7 @@ public class VentanaPrincipal extends JFrame {
 		});
 		JbtnNuevaColumna.setText("+ Columna");
 		contentPane.add(JbtnNuevaColumna);
-		
+
 		JbtnSimplifcar = new JButton();
 		JbtnSimplifcar.setBounds(320, 30, 120, 20);
 		JbtnSimplifcar.addActionListener(new ActionListener() {
@@ -210,11 +223,11 @@ public class VentanaPrincipal extends JFrame {
 		});
 		JbtnSimplifcar.setText("Simplificar");
 		contentPane.add(JbtnSimplifcar);
-		
+
 		JbtnReiniciar = new JButton();
 		JbtnReiniciar.setBounds(460, 30, 120, 20);
 		JbtnReiniciar.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				reiniciarAF();
@@ -224,12 +237,57 @@ public class VentanaPrincipal extends JFrame {
 		contentPane.add(JbtnReiniciar);
 	}
 
-	private void initLadoDerecho() {
+	private void agregarEventoMatrizTransiciones() {
+		for (int i = 0; i < JftdMatrizTransicionesPorUsuario.length; i++) {
+			for (int j = 0; j < JftdMatrizTransicionesPorUsuario[i].length; j++) {
+				final int m=i,n=j;
+				JftdMatrizTransicionesPorUsuario[i][j].addKeyListener(new KeyListener() {
+									
+					@Override
+					public void keyTyped(KeyEvent e) {
+						Validar.getInstancia().setSimbolosValidos(JtfdSimbolosPorUsuario);
+						Validar.getInstancia().validaTransicionTyped(JftdMatrizTransicionesPorUsuario[m][n],e);						
+					}
+					
+					@Override
+					public void keyReleased(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+					
+					@Override
+					public void keyPressed(KeyEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+				JftdMatrizTransicionesPorUsuario[i][j].addFocusListener(new FocusListener() {
+					
+					@Override
+					public void focusLost(FocusEvent e) {
+						Validar.getInstancia().setSimbolosValidos(JtfdSimbolosPorUsuario);
+						Validar.getInstancia().validaTransicionFocus(JftdMatrizTransicionesPorUsuario[m][n], e);
+						
+					}
+					
+					@Override
+					public void focusGained(FocusEvent e) {
+						// TODO Auto-generated method stub
+						
+					}
+				});
+			}
+		}
 		
 	}
-	
-	private void llenarLadoDerecho(){
-		Vector<String> auxEstados = ControladorVentana.getInstance().getEstados();
+
+	private void initLadoDerecho() {
+
+	}
+
+	private void llenarLadoDerecho() {
+		Vector<String> auxEstados = ControladorVentana.getInstance()
+				.getEstados();
 		JlblEstadosPorUsuario[0] = new JLabel();
 		JlblEstadosPorUsuario[0].setText(auxEstados.elementAt(0));
 		JlblEstadosPorUsuario[0].setBounds(contentPane.getWidth() - 400, 20,
@@ -247,7 +305,8 @@ public class VentanaPrincipal extends JFrame {
 			contentPane.add(JlblEstadosPorUsuario[i]);
 		}
 
-		Vector<String> auxSimbolos = ControladorVentana.getInstance().getSimbolos();
+		Vector<String> auxSimbolos = ControladorVentana.getInstance()
+				.getSimbolos();
 		JlblSimbolosPorUsuario[0] = new JLabel();
 		JlblSimbolosPorUsuario[0].setText(auxSimbolos.elementAt(0));
 		JlblSimbolosPorUsuario[0].setBounds(
@@ -270,7 +329,8 @@ public class VentanaPrincipal extends JFrame {
 			contentPane.add(JlblSimbolosPorUsuario[i]);
 		}
 
-		String[][] auxTransiciones = ControladorVentana.getInstance().getTransiciones();
+		String[][] auxTransiciones = ControladorVentana.getInstance()
+				.getTransiciones();
 		JtableTransicionesPorUsuario = new JTable(auxTransiciones, null);
 		JtableTransicionesPorUsuario.setBounds(JlblEstadosPorUsuario[0].getX()
 				+ JlblEstadosPorUsuario[0].getWidth(),
@@ -300,65 +360,6 @@ public class VentanaPrincipal extends JFrame {
 		}
 	}
 
-	private void llenarOpcionesMatrizTransiciones() {
-		String[] auxCombinaciones = generarCombinaciones();
-		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
-			for (int j = 0; j < JcbMatrizTransicionesPorUsuario[0].length; j++) {
-				JcbMatrizTransicionesPorUsuario[i][j].removeAllItems();
-				for (int k = 0; k < auxCombinaciones.length; k++) {
-					JcbMatrizTransicionesPorUsuario[i][j]
-							.addItem(auxCombinaciones[k]);
-
-				}
-			}
-		}
-	}
-
-	private String[] generarCombinaciones() {
-
-		/**String[] hn, hf, aux2, aux = new String[JtfdEstadosPorUsuario.length];
-		for (int i = 0; i < JtfdEstadosPorUsuario.length; i++) {
-			aux[i] = JtfdEstadosPorUsuario[i].getText();
-		}
-		hn = aux;
-		hf = aux;
-		for (int i = 0; i < aux.length; i++) {
-			for (int j = 0; j < hn.length; j++) {
-				aux2 = hf;
-				hf = new String[aux2.length + 1];
-				for (int j2 = 0; j2 < aux2.length; j2++) {
-					hf[j2] = aux2[j2];
-				}
-				hf[hf.length - 1] = aux[i] + hn[j];
-
-			}
-		}
-	**/
-		String[] aux = new String[JtfdEstadosPorUsuario.length];
-		for (int i = 0; i < JtfdEstadosPorUsuario.length; i++) {
-			aux[i] = JtfdEstadosPorUsuario[i].getText();
-		}
-		String[] v = new String[aux.length];
-		for (int i = 0; i < v.length; i++) {
-			v[i] = aux[0];
-		}
-		combina(aux, v, 0, aux.length-1);
-		return aux;
-	}
-	
-	private void combina(String[] aux,String[] V,int i, int n){
-		if(i>n){
-			for (int j = 0; j < V.length; j++) {
-				System.out.print(V[j]);
-			}
-			System.out.println();
-		}else{
-			combina(aux,V,i+1,n);
-			V[i] = aux[(i-1)%(aux.length)];
-			combina(aux,V,i+1,n);
-		}
-	}
-
 	private void agregarEventoEstadosUsuario() {
 		for (int i = 0; i < JtfdEstadosPorUsuario.length; i++) {
 			JtfdEstadosPorUsuario[i].addKeyListener(new KeyListener() {
@@ -369,8 +370,7 @@ public class VentanaPrincipal extends JFrame {
 
 				@Override
 				public void keyReleased(KeyEvent e) {
-					llenarOpcionesMatrizTransiciones();
-
+					Validar.getInstancia().setSimbolosValidos(JtfdSimbolosPorUsuario);
 				}
 
 				@Override
@@ -381,13 +381,14 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void agregarFila() {
-		//if(JtfdEstadosPorUsuario.length<12){
+		// if(JtfdEstadosPorUsuario.length<12){
 		agregarEstadoPorUsuario();
 		agregarFilaDeTranscionesPorUsuario();
 		agregarAceptacionPorUsuario();
-		//}else{
-		//	JOptionPane.showMessageDialog(null, "Cantidad maxima de estados alcanzada");
-		//}
+		// }else{
+		// JOptionPane.showMessageDialog(null,
+		// "Cantidad maxima de estados alcanzada");
+		// }
 	}
 
 	private void agregarAceptacionPorUsuario() {
@@ -412,7 +413,8 @@ public class VentanaPrincipal extends JFrame {
 								.getHeight());
 		JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1]
 				.setText("0");
-		JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1].setFont(FUENTE);
+		JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1]
+				.setFont(FUENTE);
 		contentPane
 				.add(JtbtnAceptacionesUsuario[JtbtnAceptacionesUsuario.length - 1]);
 		agregrEventoAlVectorAceptaciones();
@@ -422,33 +424,34 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void agregarFilaDeTranscionesPorUsuario() {
-		JComboBox<String>[][] aux = new JComboBox[JcbMatrizTransicionesPorUsuario.length][JcbMatrizTransicionesPorUsuario[0].length];
-		aux = JcbMatrizTransicionesPorUsuario;
-		JcbMatrizTransicionesPorUsuario = new JComboBox[JcbMatrizTransicionesPorUsuario.length + 1][JcbMatrizTransicionesPorUsuario[0].length];
+		JFormattedTextField[][] aux = new JFormattedTextField[JftdMatrizTransicionesPorUsuario.length][JftdMatrizTransicionesPorUsuario[0].length];
+		aux = JftdMatrizTransicionesPorUsuario;
+		JftdMatrizTransicionesPorUsuario = new JFormattedTextField[JftdMatrizTransicionesPorUsuario.length + 1][JftdMatrizTransicionesPorUsuario[0].length];
 		for (int i = 0; i < aux.length; i++) {
 			for (int j = 0; j < aux[0].length; j++) {
-				JcbMatrizTransicionesPorUsuario[i][j] = aux[i][j];
+				JftdMatrizTransicionesPorUsuario[i][j] = aux[i][j];
 			}
 		}
-		for (int i = 0; i < JcbMatrizTransicionesPorUsuario[0].length; i++) {
-			JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i] = new JComboBox();
-			JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i]
+		for (int i = 0; i < JftdMatrizTransicionesPorUsuario[0].length; i++) {
+			JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 1][i] = new JFormattedTextField();
+			JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 1][i]
 					.setBounds(
-							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+							JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 2][i]
 									.getX(),
-							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+							JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 2][i]
 									.getY()
-									+ JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+									+ JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 2][i]
 											.getHeight(),
-							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+							JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 2][i]
 									.getWidth(),
-							JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 2][i]
+							JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 2][i]
 									.getHeight());
-			JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i].setFont(FUENTE);
+			JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 1][i]
+					.setFont(FUENTE);
 			contentPane
-					.add(JcbMatrizTransicionesPorUsuario[JcbMatrizTransicionesPorUsuario.length - 1][i]);
+					.add(JftdMatrizTransicionesPorUsuario[JftdMatrizTransicionesPorUsuario.length - 1][i]);
 		}
-		llenarOpcionesMatrizTransiciones();
+		agregarEventoMatrizTransiciones();
 		contentPane.repaint();
 	}
 
@@ -480,12 +483,13 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void agregarColumna() {
-		if(JtfdSimbolosPorUsuario.length<5){
-		agregarSimboloPorUsuario();
-		moverArrayDeAeptaciones();
-		agregarColumnaDeTransicionesDeUsuario();
-		}else{
-			JOptionPane.showMessageDialog(null, "Cantidad maxima de simbolos alcanzada");
+		if (JtfdSimbolosPorUsuario.length < 5) {
+			agregarSimboloPorUsuario();
+			moverArrayDeAeptaciones();
+			agregarColumnaDeTransicionesDeUsuario();
+		} else {
+			JOptionPane.showMessageDialog(null,
+					"Cantidad maxima de simbolos alcanzada");
 		}
 	}
 
@@ -493,7 +497,7 @@ public class VentanaPrincipal extends JFrame {
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
 			JtbtnAceptacionesUsuario[i].setBounds(
 					JtbtnAceptacionesUsuario[i].getX()
-							+ JcbMatrizTransicionesPorUsuario[0][0].getWidth(),
+							+ JftdMatrizTransicionesPorUsuario[0][0].getWidth(),
 					JtbtnAceptacionesUsuario[i].getY(),
 					JtbtnAceptacionesUsuario[i].getWidth(),
 					JtbtnAceptacionesUsuario[i].getHeight());
@@ -502,23 +506,31 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void agregarColumnaDeTransicionesDeUsuario() {
-		JComboBox<String>[][] aux = new JComboBox[JcbMatrizTransicionesPorUsuario.length][JcbMatrizTransicionesPorUsuario[0].length];
-		aux = JcbMatrizTransicionesPorUsuario;
-		JcbMatrizTransicionesPorUsuario = new JComboBox[JcbMatrizTransicionesPorUsuario.length][JcbMatrizTransicionesPorUsuario[0].length + 1];
+		JFormattedTextField[][] aux = new JFormattedTextField[JftdMatrizTransicionesPorUsuario.length][JftdMatrizTransicionesPorUsuario[0].length];
+		aux = JftdMatrizTransicionesPorUsuario;
+		JftdMatrizTransicionesPorUsuario = new JFormattedTextField[JftdMatrizTransicionesPorUsuario.length][JftdMatrizTransicionesPorUsuario[0].length + 1];
 		for (int i = 0; i < aux.length; i++) {
 			for (int j = 0; j < aux[0].length; j++) {
-				JcbMatrizTransicionesPorUsuario[i][j] = aux[i][j];
+				JftdMatrizTransicionesPorUsuario[i][j] = aux[i][j];
 			}
 		}
-		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
-			System.out.println(i+","+JcbMatrizTransicionesPorUsuario[0].length);
-			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1] = new JComboBox();
-			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1].setBounds(JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length-2].getX()+WIDTHCOMBO, YINICIAL+HEIGHTELEMENTO+i*HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
-			JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1].setFont(FUENTE);
-			contentPane.add(JcbMatrizTransicionesPorUsuario[i][JcbMatrizTransicionesPorUsuario.length - 1]);
-		
+		for (int i = 0; i < JftdMatrizTransicionesPorUsuario.length; i++) {
+			System.out.println(i + ","
+					+ JftdMatrizTransicionesPorUsuario[0].length);
+			JftdMatrizTransicionesPorUsuario[i][JftdMatrizTransicionesPorUsuario.length - 1] = new JFormattedTextField();
+			JftdMatrizTransicionesPorUsuario[i][JftdMatrizTransicionesPorUsuario.length - 1]
+					.setBounds(
+							JftdMatrizTransicionesPorUsuario[i][JftdMatrizTransicionesPorUsuario.length - 2]
+									.getX() + WIDTHCOMBO, YINICIAL
+									+ HEIGHTELEMENTO + i * HEIGHTELEMENTO,
+							WIDTHCOMBO, HEIGHTELEMENTO);
+			JftdMatrizTransicionesPorUsuario[i][JftdMatrizTransicionesPorUsuario.length - 1]
+					.setFont(FUENTE);
+			contentPane
+					.add(JftdMatrizTransicionesPorUsuario[i][JftdMatrizTransicionesPorUsuario.length - 1]);
+
 		}
-		llenarOpcionesMatrizTransiciones();
+		agregarEventoMatrizTransiciones();
 		contentPane.repaint();
 
 	}
@@ -543,13 +555,12 @@ public class VentanaPrincipal extends JFrame {
 								.getWidth(),
 						JtfdSimbolosPorUsuario[JtfdSimbolosPorUsuario.length - 2]
 								.getHeight());
-		JtfdSimbolosPorUsuario[JtfdSimbolosPorUsuario.length - 1].setFont(FUENTE);
+		JtfdSimbolosPorUsuario[JtfdSimbolosPorUsuario.length - 1]
+				.setFont(FUENTE);
 		contentPane
 				.add(JtfdSimbolosPorUsuario[JtfdSimbolosPorUsuario.length - 1]);
 		contentPane.repaint();
 	}
-	
-
 
 	private void reiniciarAF() {
 		contentPane.removeAll();
@@ -558,8 +569,8 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void obtenerAFD() {
-		//contentPane.setVisible(false);
-		//agregarSegundoPanel();
+		// contentPane.setVisible(false);
+		// agregarSegundoPanel();
 		Vector<Boolean> aceptaciones = new Vector<>();
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
 			if (JtbtnAceptacionesUsuario[i].getText().equals("0")) {
@@ -576,45 +587,42 @@ public class VentanaPrincipal extends JFrame {
 		for (int i = 0; i < JtfdSimbolosPorUsuario.length; i++) {
 			simbolos.add(JtfdSimbolosPorUsuario[i].getText());
 		}
-		String[][] matrizTransiciones = new String[JcbMatrizTransicionesPorUsuario.length][JcbMatrizTransicionesPorUsuario[0].length];
-		for (int i = 0; i < JcbMatrizTransicionesPorUsuario.length; i++) {
-			for (int j = 0; j < JcbMatrizTransicionesPorUsuario[0].length; j++) {
-				matrizTransiciones[i][j] = JcbMatrizTransicionesPorUsuario[i][j]
-						.getSelectedItem().toString();
+		String[][] matrizTransiciones = new String[JftdMatrizTransicionesPorUsuario.length][JftdMatrizTransicionesPorUsuario[0].length];
+		for (int i = 0; i < JftdMatrizTransicionesPorUsuario.length; i++) {
+			for (int j = 0; j < JftdMatrizTransicionesPorUsuario[0].length; j++) {
+				matrizTransiciones[i][j] = JftdMatrizTransicionesPorUsuario[i][j]
+						.getText();
 			}
 		}
-		ControladorVentana.getInstance().simplificar(estados, matrizTransiciones, simbolos,
-				aceptaciones);
-		//initLadoDerecho();
+		ControladorVentana.getInstance().simplificar(estados,
+				matrizTransiciones, simbolos, aceptaciones);
+		// initLadoDerecho();
 	}
+
 	private void agregarSegundoPanel() {
-		
-		
+
 		secondPane = new JPanel();
 		this.setContentPane(secondPane);
-		int x=30;
-		int y= 40;
+		int x = 30;
+		int y = 40;
 		secondPane.setLayout(null);
 		JTextField[][] matrizNueva = new JTextField[5][5];
-		for(int i =0;i<matrizNueva.length;i++){
-			for (int j=0;j<matrizNueva.length;j++){
-			matrizNueva[i][j].setText("Hola");
-			matrizNueva[i][j].setBounds(x, y, 30, 40);
-			secondPane.add(matrizNueva[i][j]);
-			x=x+30;
-			y=y+40;
-		
+		for (int i = 0; i < matrizNueva.length; i++) {
+			for (int j = 0; j < matrizNueva.length; j++) {
+				matrizNueva[i][j].setText("Hola");
+				matrizNueva[i][j].setBounds(x, y, 30, 40);
+				secondPane.add(matrizNueva[i][j]);
+				x = x + 30;
+				y = y + 40;
+
 			}
 		}
 		secondPane.setVisible(true);
 		repaint();
 
-	
-		
-		
 	}
 
-	public static void main(String args[]){
+	public static void main(String args[]) {
 		VentanaPrincipal vp = new VentanaPrincipal();
 	}
 }

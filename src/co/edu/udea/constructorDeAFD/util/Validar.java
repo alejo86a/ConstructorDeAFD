@@ -6,7 +6,9 @@ package co.edu.udea.constructorDeAFD.util;
 import java.awt.Color;
 import java.awt.event.FocusEvent;
 import java.awt.event.KeyEvent;
+import java.util.Arrays;
 import java.util.StringTokenizer;
+import java.util.Vector;
 
 import javax.swing.BorderFactory;
 import javax.swing.JFormattedTextField;
@@ -73,7 +75,7 @@ public class Validar {
 		}
 		ordena(texto);
 		if(texto.endsWith(",")){
-			caja.setText(texto.substring(0, texto.length()-1));
+			texto = texto.substring(0, texto.length()-1);
 		}
 		caja.setText(texto);
 		
@@ -85,7 +87,12 @@ public class Validar {
 	}
 
 	private void ordena(String texto) {
-		// TODO Auto-generated method stub
+		StringTokenizer auxTexto = new StringTokenizer(texto,",");
+		String[] auxVectexto = new String[auxTexto.countTokens()];	
+		for(int i=0;auxTexto.hasMoreTokens();i++){
+			auxVectexto[i] = auxTexto.nextToken();
+		}
+		Arrays.sort(auxVectexto);
 		
 	}
 

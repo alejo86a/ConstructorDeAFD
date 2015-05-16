@@ -245,8 +245,8 @@ public class VentanaPrincipal extends JFrame {
 									
 					@Override
 					public void keyTyped(KeyEvent e) {
-						Validar.getInstancia().setSimbolosValidos(JtfdSimbolosPorUsuario);
-						Validar.getInstancia().validaTransicionTyped(JftdMatrizTransicionesPorUsuario[m][n],e);						
+						Validar.getInstancia().setSimbolosValidos(JtfdEstadosPorUsuario);
+						Validar.getInstancia().validaTransicionTyped(JftdMatrizTransicionesPorUsuario[m][n],e);
 					}
 					
 					@Override
@@ -265,7 +265,7 @@ public class VentanaPrincipal extends JFrame {
 					
 					@Override
 					public void focusLost(FocusEvent e) {
-						Validar.getInstancia().setSimbolosValidos(JtfdSimbolosPorUsuario);
+						Validar.getInstancia().setSimbolosValidos(JtfdEstadosPorUsuario);
 						Validar.getInstancia().validaTransicionFocus(JftdMatrizTransicionesPorUsuario[m][n], e);
 						
 					}
@@ -370,7 +370,7 @@ public class VentanaPrincipal extends JFrame {
 
 				@Override
 				public void keyReleased(KeyEvent e) {
-					Validar.getInstancia().setSimbolosValidos(JtfdSimbolosPorUsuario);
+					Validar.getInstancia().setSimbolosValidos(JtfdEstadosPorUsuario);
 				}
 
 				@Override

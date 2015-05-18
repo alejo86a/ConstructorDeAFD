@@ -28,14 +28,7 @@ public class ControladorVentana {
 	public ControladorVentana(){
 		
 	}
-	/**
-	 * Recibe la instancia unica de la ventana principal
-	 * 
-	 * @param guiPrincipal
-	 */
-	private ControladorVentana(VentanaPrincipal guiPrincipal) {
-		this.guiPrincipal = guiPrincipal;
-	}
+		
 	
 	public static ControladorVentana getInstance(){
 		return instancia;
@@ -48,7 +41,7 @@ public class ControladorVentana {
 				aceptaciones);
 		aFSimplicado = aFUsuario;
 		aFSimplicado.Simplifique();
-		aFSimplicado.imprimirAF();
+		aFSimplicado.generarHilera();
 	}
 
 	public Vector<String> getSimbolos() {

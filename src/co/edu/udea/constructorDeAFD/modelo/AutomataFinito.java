@@ -6,6 +6,8 @@ package co.edu.udea.constructorDeAFD.modelo;
 import java.util.Random;
 import java.util.Vector;
 
+import javax.swing.JOptionPane;
+
 import org.omg.CORBA.portable.RemarshalException;
 
 /**
@@ -70,8 +72,9 @@ public class AutomataFinito {
 	 */
 
 	public void Simplifique() {
-		convierteAAFD();
+	    convierteAAFD();
 		eliminarExtranos();
+		imprimirAF();
 		hallarEquivalentes();
 	}
 
@@ -148,7 +151,11 @@ public class AutomataFinito {
 	}
 
 	public Vector<String> getEstados() {
-		return estados;
+		Vector<String> aux = new Vector();
+		for (int i = 0; i < estados.size(); i++) {
+			aux.addElement((String) estados.elementAt(i));
+		}
+		return aux;
 	}
 
 	public Vector<String> getSimbolos() {
@@ -156,12 +163,28 @@ public class AutomataFinito {
 	}
 
 	public Vector<String> getAceptaciones() {
-		Vector<String> aceptacionesEnCerosYUNos = null;
+		Vector<String> aceptacionesEnCerosYUNos = new Vector();
+		for (int i = 0; i < aceptaciones.size(); i++) {
+			if (aceptaciones.elementAt(i) == false) {
+				aceptacionesEnCerosYUNos.addElement("0");
+			} else {
+				aceptacionesEnCerosYUNos.addElement("1");
+			}
+		}
 		return aceptacionesEnCerosYUNos;
 	}
 
 	public String[][] getTransiciones() {
-		String[][] matrizTransiciones = null;
+		String[][] matrizTransiciones = new String[transiciones.size()][transiciones
+				.elementAt(0).size()];
+		;
+
+		for (int i = 0; i < transiciones.size(); i++) {
+			for (int j = 0; j < transiciones.elementAt(0).size(); j++) {
+				matrizTransiciones[i][j] = (String) transiciones.elementAt(i)
+						.elementAt(j);
+			}
+		}
 		return matrizTransiciones;
 	}
 
@@ -213,6 +236,9 @@ public class AutomataFinito {
 			while (b == false) {
 				String auxEstado = "";
 
+
+
+System.out.println(auxEstado = n[estadoActual][x]);
 				auxEstado = n[estadoActual][x];
 
 				int e = buscarEstado(auxEstado);
@@ -353,10 +379,10 @@ public class AutomataFinito {
 		return lugar;
 	}
 
-	public void validarHilera1(String h) {
+	public Vector validarHilera1(String h) {
 		Vector ruta = new Vector();
 		ruta.addElement(estados.elementAt(0));
-
+		String via = "";
 		String estadoActual = estados.elementAt(0);
 
 		for (int i = 0; i < h.length(); i++) {
@@ -368,21 +394,33 @@ public class AutomataFinito {
 
 		}
 
-		System.out.println("Estado Inicial");
+		via = via + "Estado Inicial ---->> " + estados.elementAt(0);
+
 		for (int i = 1; i < ruta.size(); i++) {
+			via = via + "\n" + "Se ingresa al estado " + "---->> "
+					+ ruta.elementAt(i) + " Con el simbolo " + h.charAt(i - 1);
+
 			System.out.println("Se ingresa al estado " + ruta.elementAt(i)
 					+ " Con el simbolo " + h.charAt(i - 1));
 
 		}
+
 		int evaluar = buscarEstado((String) ruta.elementAt((ruta.size()) - 1));
 		if (esAceptacion(evaluar)) {
+			via = via + "\n" + "La hilera  " + h
+					+ " es ACEPTADA  Por el automata :D ";
+
 			System.out.println("La hilera  " + h
 					+ " es Aceptada Por el automata ");
 		} else {
+			via=via + "\n" +"La hilera  " + h
+					+ "   es RECHAZADA Por el automata :( ";
+			
 			System.out.println("La hilera  " + h
 					+ "  NO es Aceptada Por el automata ");
 		}
-
+		JOptionPane.showMessageDialog(null, via);
+		return ruta;
 	}
 
 	public int buscarSimboloPorLetra(char s) {

@@ -4,6 +4,7 @@
 package co.edu.udea.constructorDeAFD.vista;
 
 import java.awt.BorderLayout;
+import java.awt.Color;
 import java.awt.Font;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -13,6 +14,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.util.Vector;
 
+import javax.swing.BorderFactory;
 import javax.swing.JButton;
 import javax.swing.JComboBox;
 import javax.swing.JFormattedTextField;
@@ -34,7 +36,7 @@ import co.edu.udea.constructorDeAFD.util.Validar;
  * Jframe que contiene los componenetes graficos de la aplicaci�n
  * 
  * @author alejandro & Martin
- *
+ * 
  */
 public class VentanaPrincipal extends JFrame {
 
@@ -59,12 +61,15 @@ public class VentanaPrincipal extends JFrame {
 	 * Lado derecho
 	 */
 	private JLabel[] JlblEstadosPorUsuario;
+	private JLabel[] Hileras;
+	private JLabel[][] JlbmatrizTransiciones;
 	private JLabel[] JlblSimbolosPorUsuario;
 	private JLabel[] JlblAceptacionesPorUsuario;
 	private JTable JtableTransicionesPorUsuario;
 	private JButton JbtnAnterior;
 	private JButton JbtnSIguiente;
 	private JButton JbtnSolucionado;
+	private JButton atras;
 	private JFormattedTextField JtfdHilera;
 	private JLabel JlblRespuesta;
 	/**
@@ -94,7 +99,9 @@ public class VentanaPrincipal extends JFrame {
 
 		// iniciar los atributos basicos del panel principal
 		contentPane = new JPanel();
-		// this.setContentPane(contentPane);
+
+		secondPane = new JPanel();
+		// this.setContentPane(secondPane);
 		JScrollPane scroller = new JScrollPane(contentPane);
 		this.getContentPane().add(scroller, BorderLayout.CENTER);
 		this.getContentPane().setBounds(this.getContentPane().getX(),
@@ -105,6 +112,9 @@ public class VentanaPrincipal extends JFrame {
 
 		iniciarConstantesRelativas();
 		initLadoIzquierdo();
+		agregarSegundoPanel();
+		secondPane.setLayout(null);
+		secondPane.setVisible(false);
 
 		this.setVisible(true);
 
@@ -240,109 +250,214 @@ public class VentanaPrincipal extends JFrame {
 	private void agregarEventoMatrizTransiciones() {
 		for (int i = 0; i < JftdMatrizTransicionesPorUsuario.length; i++) {
 			for (int j = 0; j < JftdMatrizTransicionesPorUsuario[i].length; j++) {
-				final int m=i,n=j;
-				JftdMatrizTransicionesPorUsuario[i][j].addKeyListener(new KeyListener() {
-									
-					@Override
-					public void keyTyped(KeyEvent e) {
-						Validar.getInstancia().setSimbolosValidos(JtfdEstadosPorUsuario);
-						Validar.getInstancia().validaTransicionTyped(JftdMatrizTransicionesPorUsuario[m][n],e);
-					}
-					
-					@Override
-					public void keyReleased(KeyEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-					
-					@Override
-					public void keyPressed(KeyEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
-				JftdMatrizTransicionesPorUsuario[i][j].addFocusListener(new FocusListener() {
-					
-					@Override
-					public void focusLost(FocusEvent e) {
-						Validar.getInstancia().setSimbolosValidos(JtfdEstadosPorUsuario);
-						Validar.getInstancia().validaTransicionFocus(JftdMatrizTransicionesPorUsuario[m][n], e);
-						
-					}
-					
-					@Override
-					public void focusGained(FocusEvent e) {
-						// TODO Auto-generated method stub
-						
-					}
-				});
+				final int m = i, n = j;
+				JftdMatrizTransicionesPorUsuario[i][j]
+						.addKeyListener(new KeyListener() {
+
+							@Override
+							public void keyTyped(KeyEvent e) {
+								Validar.getInstancia().setSimbolosValidos(
+										JtfdEstadosPorUsuario);
+								Validar.getInstancia().validaTransicionTyped(
+										JftdMatrizTransicionesPorUsuario[m][n],
+										e);
+							}
+
+							@Override
+							public void keyReleased(KeyEvent e) {
+								// TODO Auto-generated method stub
+
+							}
+
+							@Override
+							public void keyPressed(KeyEvent e) {
+								// TODO Auto-generated method stub
+
+							}
+						});
+				JftdMatrizTransicionesPorUsuario[i][j]
+						.addFocusListener(new FocusListener() {
+
+							@Override
+							public void focusLost(FocusEvent e) {
+								Validar.getInstancia().setSimbolosValidos(
+										JtfdEstadosPorUsuario);
+								Validar.getInstancia().validaTransicionFocus(
+										JftdMatrizTransicionesPorUsuario[m][n],
+										e);
+
+							}
+
+							@Override
+							public void focusGained(FocusEvent e) {
+								// TODO Auto-generated method stub
+
+							}
+						});
 			}
 		}
-		
+
 	}
 
 	private void initLadoDerecho() {
-
+		llenarLadoDerecho();
 	}
 
 	private void llenarLadoDerecho() {
+		secondPane.removeAll();
+		secondPane.repaint();
+		atras = new JButton("Atras");
+		atras.setBounds((this.getWidth() - (2 * WIDTHCOMBO)), YINICIAL - 20,
+				WIDTHCOMBO, HEIGHTELEMENTO);
+
+		atras.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				secondPane.setVisible(false);
+				setContentPane(contentPane);
+				contentPane.setVisible(true);
+
+				System.out.println("hola");
+
+			}
+		});
+		atras.setVisible(true);
+		secondPane.add(atras);
+		
+
+		JtfdHilera = new JFormattedTextField("Ingresar Hilera");
+		JtfdHilera.setBounds((this.getWidth() - (4 * WIDTHCOMBO)),
+				YINICIAL + 70, WIDTHCOMBO + 50, HEIGHTELEMENTO - 15);
+		JtfdHilera.setFont(FUENTE);
+		secondPane.add(JtfdHilera);//
+
+		JbtnSolucionado = new JButton("Validar");
+		JbtnSolucionado.addActionListener(new ActionListener() {
+			
+			@Override
+			public void actionPerformed(ActionEvent arg0) {
+				
+				validaHilera();
+			}
+
+
+		});
+		JbtnSolucionado.setBounds((this.getWidth() - (2 * WIDTHCOMBO)),
+				YINICIAL + 70, WIDTHCOMBO, HEIGHTELEMENTO - 15);
+		JbtnSolucionado.setVisible(true);
+		secondPane.add(JbtnSolucionado);
+		
+		String[]auxHilera=ControladorVentana.getInstance().getHileras();
+		
+		Hileras = new JLabel[5];
+		int auxH=YINICIAL;
+		for (int i = 0; i < Hileras.length; i++) {
+
+			Hileras[i] = new JLabel(auxHilera[i]);
+			Hileras[i].setBounds((this.getWidth() - (4 * WIDTHCOMBO)),
+					(YINICIAL + 120) + i * HEIGHTELEMENTO, WIDTHCOMBO + 100,
+					HEIGHTELEMENTO - 15);
+			Hileras[i].setVisible(true);
+			Hileras[i].setFont(FUENTE);
+			Hileras[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+			secondPane.add(Hileras[i]);
+			auxH = YINICIAL + 10;
+
+		}
+		
+		
+		
+		
+		
 		Vector<String> auxEstados = ControladorVentana.getInstance()
 				.getEstados();
-		JlblEstadosPorUsuario[0] = new JLabel();
-		JlblEstadosPorUsuario[0].setText(auxEstados.elementAt(0));
-		JlblEstadosPorUsuario[0].setBounds(contentPane.getWidth() - 400, 20,
-				40, 20);
-		contentPane.add(JlblEstadosPorUsuario[0]);
-		for (int i = 1; i < auxEstados.size(); i++) {
-			JlblEstadosPorUsuario[i] = new JLabel();
-			JlblEstadosPorUsuario[i].setText(auxEstados.elementAt(i));
-			JlblEstadosPorUsuario[i].setBounds(
-					JlblEstadosPorUsuario[i - 1].getX(),
-					JlblEstadosPorUsuario[i - 1].getY()
-							+ JlblEstadosPorUsuario[i - 1].getHeight(),
-					JlblEstadosPorUsuario[i - 1].getWidth(),
-					JlblEstadosPorUsuario[i - 1].getHeight());
-			contentPane.add(JlblEstadosPorUsuario[i]);
+		int x = XINICIAL, y = YINICIAL + HEIGHTELEMENTO;
+		JlblEstadosPorUsuario = new JLabel[auxEstados.size()];
+		for (int i = 0; i < auxEstados.size(); i++) {
+
+			JlblEstadosPorUsuario[i] = new JLabel((String) auxEstados.elementAt(i));
+			JlblEstadosPorUsuario[i].setBounds(x, y, WIDTHELEMENTO,
+					HEIGHTELEMENTO);
+			JlblEstadosPorUsuario[i].setFont(FUENTE);
+			
+			secondPane.add(JlblEstadosPorUsuario[i]);
+
+			y = JlblEstadosPorUsuario[i].getY()
+					+ JlblEstadosPorUsuario[i].getHeight();
+
 		}
 
 		Vector<String> auxSimbolos = ControladorVentana.getInstance()
 				.getSimbolos();
-		JlblSimbolosPorUsuario[0] = new JLabel();
-		JlblSimbolosPorUsuario[0].setText(auxSimbolos.elementAt(0));
-		JlblSimbolosPorUsuario[0].setBounds(
-				JlblEstadosPorUsuario[0].getX()
-						+ JlblEstadosPorUsuario[0].getWidth(),
-				JlblEstadosPorUsuario[0].getY()
-						- JlblEstadosPorUsuario[0].getHeight(),
-				JlblEstadosPorUsuario[0].getWidth(),
-				JlblEstadosPorUsuario[0].getHeight());
-		contentPane.add(JlblSimbolosPorUsuario[0]);
+		JlblSimbolosPorUsuario=new JLabel[auxSimbolos.size()];
+		int xi = XINICIAL + WIDTHELEMENTO;
 		for (int i = 0; i < auxSimbolos.size(); i++) {
 			JlblSimbolosPorUsuario[i] = new JLabel();
-			JlblSimbolosPorUsuario[i].setText(auxSimbolos.elementAt(i));
-			JlblSimbolosPorUsuario[i].setBounds(
-					JlblSimbolosPorUsuario[i - 1].getX()
-							+ JlblSimbolosPorUsuario[i - 1].getWidth(),
-					JlblSimbolosPorUsuario[i - 1].getY(),
-					JlblSimbolosPorUsuario[i - 1].getWidth(),
-					JlblSimbolosPorUsuario[i - 1].getHeight());
-			contentPane.add(JlblSimbolosPorUsuario[i]);
+			JlblSimbolosPorUsuario[i].setBounds(xi, YINICIAL, WIDTHCOMBO,
+					HEIGHTELEMENTO);
+			JlblSimbolosPorUsuario[i].setFont(FUENTE);
+			JlblSimbolosPorUsuario[i]
+					.setText((String) auxSimbolos.elementAt(i));
+			secondPane.add((JlblSimbolosPorUsuario[i]));
+			xi = JlblSimbolosPorUsuario[i].getX() + WIDTHCOMBO;
 		}
 
 		String[][] auxTransiciones = ControladorVentana.getInstance()
 				.getTransiciones();
-		JtableTransicionesPorUsuario = new JTable(auxTransiciones, null);
-		JtableTransicionesPorUsuario.setBounds(JlblEstadosPorUsuario[0].getX()
-				+ JlblEstadosPorUsuario[0].getWidth(),
-				JlblEstadosPorUsuario[0].getY(),
-				JlblEstadosPorUsuario[0].getWidth() * auxTransiciones.length,
-				JlblEstadosPorUsuario[0].getHeight()
-						* auxTransiciones[0].length);
-		contentPane.add(JtableTransicionesPorUsuario);
+		JlbmatrizTransiciones=new JLabel[auxTransiciones.length][auxTransiciones[0].length];
+		int x2 = XINICIAL + WIDTHELEMENTO;
+		int y2 = YINICIAL + HEIGHTELEMENTO;
+		for (int i = 0; i < auxTransiciones.length; i++) {
+			for (int j = 0; j < auxTransiciones[0].length; j++) {
+				JlbmatrizTransiciones[i][j] = new JLabel();
+				JlbmatrizTransiciones[i][j].setBounds(x2, y2, WIDTHCOMBO,
+						HEIGHTELEMENTO);
+				JlbmatrizTransiciones[i][j].setBorder(BorderFactory
+						.createLineBorder(Color.GRAY, 1));
+				JlbmatrizTransiciones[i][j].setFont(FUENTE);
+				JlbmatrizTransiciones[i][j].setText((String)auxTransiciones[i][j]);
+				secondPane.add(JlbmatrizTransiciones[i][j]);
+				x2 += WIDTHCOMBO;
+			}
+			x2 = XINICIAL + WIDTHELEMENTO;
+			y2 = y2 + HEIGHTELEMENTO;
+		}
 
-		contentPane.repaint();
+		
+		Vector<String> auxAceptaciones = ControladorVentana.getInstance()
+				.getAceptaciones();
+		JlblAceptacionesPorUsuario = new JLabel[auxAceptaciones.size()];
+		
+		int y3 = YINICIAL + HEIGHTELEMENTO;
+		int x3 = XINICIAL + WIDTHELEMENTO + WIDTHCOMBO * (JlbmatrizTransiciones.length);
+		
+		for (int i = 0; i < auxAceptaciones.size(); i++) {
+			
+			JlblAceptacionesPorUsuario[i] = new JLabel(
+					(String) auxAceptaciones.elementAt(i));
+			JlblAceptacionesPorUsuario[i].setBounds(x3, y3, WIDTHCOMBO,
+					HEIGHTELEMENTO);
+
+			JlblAceptacionesPorUsuario[i].setFont(FUENTE);
+			secondPane.add(JlblAceptacionesPorUsuario[i]);
+			
+			y3 = JlblAceptacionesPorUsuario[i].getY() + HEIGHTELEMENTO;
+		}
+
+
+
+		
+		
+		secondPane.repaint();
 	}
 
+	private void validaHilera() {
+		Vector v = ControladorVentana.getInstance().validaHilera(JtfdHilera.getText());
+		
+		
+	}
+	
 	private void agregrEventoAlVectorAceptaciones() {
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
 			final int p = i;
@@ -370,7 +485,8 @@ public class VentanaPrincipal extends JFrame {
 
 				@Override
 				public void keyReleased(KeyEvent e) {
-					Validar.getInstancia().setSimbolosValidos(JtfdEstadosPorUsuario);
+					Validar.getInstancia().setSimbolosValidos(
+							JtfdEstadosPorUsuario);
 				}
 
 				@Override
@@ -495,12 +611,14 @@ public class VentanaPrincipal extends JFrame {
 
 	private void moverArrayDeAeptaciones() {
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
-			JtbtnAceptacionesUsuario[i].setBounds(
-					JtbtnAceptacionesUsuario[i].getX()
-							+ JftdMatrizTransicionesPorUsuario[0][0].getWidth(),
-					JtbtnAceptacionesUsuario[i].getY(),
-					JtbtnAceptacionesUsuario[i].getWidth(),
-					JtbtnAceptacionesUsuario[i].getHeight());
+			JtbtnAceptacionesUsuario[i]
+					.setBounds(
+							JtbtnAceptacionesUsuario[i].getX()
+									+ JftdMatrizTransicionesPorUsuario[0][0]
+											.getWidth(),
+							JtbtnAceptacionesUsuario[i].getY(),
+							JtbtnAceptacionesUsuario[i].getWidth(),
+							JtbtnAceptacionesUsuario[i].getHeight());
 		}
 		contentPane.repaint();
 	}
@@ -569,8 +687,13 @@ public class VentanaPrincipal extends JFrame {
 	}
 
 	private void obtenerAFD() {
-		// contentPane.setVisible(false);
-		// agregarSegundoPanel();
+
+		this.setContentPane(secondPane);
+		contentPane.setVisible(false);
+		secondPane.setVisible(true);
+
+		// llamar metodo que verifica que este bien llenado
+		// initLadoDerecho(); este lo llama cuando ese metodo este bien hecho
 		Vector<Boolean> aceptaciones = new Vector<>();
 		for (int i = 0; i < JtbtnAceptacionesUsuario.length; i++) {
 			if (JtbtnAceptacionesUsuario[i].getText().equals("0")) {
@@ -596,29 +719,136 @@ public class VentanaPrincipal extends JFrame {
 		}
 		ControladorVentana.getInstance().simplificar(estados,
 				matrizTransiciones, simbolos, aceptaciones);
-		// initLadoDerecho();
+		initLadoDerecho();
 	}
 
 	private void agregarSegundoPanel() {
 
-		secondPane = new JPanel();
-		this.setContentPane(secondPane);
-		int x = 30;
-		int y = 40;
-		secondPane.setLayout(null);
-		JTextField[][] matrizNueva = new JTextField[5][5];
-		for (int i = 0; i < matrizNueva.length; i++) {
-			for (int j = 0; j < matrizNueva.length; j++) {
-				matrizNueva[i][j].setText("Hola");
-				matrizNueva[i][j].setBounds(x, y, 30, 40);
-				secondPane.add(matrizNueva[i][j]);
-				x = x + 30;
-				y = y + 40;
+		// Se agraga Boton de "Atras" para regresar al primer panel
+		atras = new JButton("Atras");
+		atras.setBounds((this.getWidth() - (2 * WIDTHCOMBO)), YINICIAL - 20,
+				WIDTHCOMBO, HEIGHTELEMENTO);
+
+		atras.addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				secondPane.setVisible(false);
+				setContentPane(contentPane);
+				contentPane.setVisible(true);
+
+				System.out.println("hola");
 
 			}
+		});
+		atras.setVisible(true);
+		secondPane.add(atras);//
+		// Agrego el boton de validar, el Texfield donde se ingresara las
+		// hileras y 5 labels donde se mostraran Hileras generadas.
+		JtfdHilera = new JFormattedTextField("Ingresar Hilera");
+		JtfdHilera.setBounds((this.getWidth() - (4 * WIDTHCOMBO)),
+				YINICIAL + 70, WIDTHCOMBO + 50, HEIGHTELEMENTO - 15);
+		JtfdHilera.setFont(FUENTE);
+		secondPane.add(JtfdHilera);//
+
+		JbtnSolucionado = new JButton("Validar");
+		JbtnSolucionado.setBounds((this.getWidth() - (2 * WIDTHCOMBO)),
+				YINICIAL + 70, WIDTHCOMBO, HEIGHTELEMENTO - 15);
+		JbtnSolucionado.setVisible(true);
+		secondPane.add(JbtnSolucionado);
+
+		Hileras = new JLabel[5];
+		int aux = YINICIAL;
+		for (int i = 0; i < Hileras.length; i++) {
+
+			Hileras[i] = new JLabel("Hilera " + (i + 1));
+			Hileras[i].setBounds((this.getWidth() - (4 * WIDTHCOMBO)),
+					(YINICIAL + 120) + i * HEIGHTELEMENTO, WIDTHCOMBO + 100,
+					HEIGHTELEMENTO - 15);
+			Hileras[i].setVisible(true);
+			Hileras[i].setFont(FUENTE);
+			Hileras[i].setBorder(BorderFactory.createLineBorder(Color.GRAY, 1));
+			secondPane.add(Hileras[i]);
+			aux = aux + 10;
+
 		}
-		secondPane.setVisible(true);
-		repaint();
+		
+
+		JLabel estadoInicial = new JLabel(">>");
+		estadoInicial.setBounds(XINICIAL - 15, YINICIAL + HEIGHTELEMENTO, 20,
+				HEIGHTELEMENTO);
+		secondPane.add(estadoInicial);
+
+		JlblEstadosPorUsuario = new JLabel[2];
+
+		JlblEstadosPorUsuario[0] = new JLabel();
+		JlblEstadosPorUsuario[0].setBounds(XINICIAL, YINICIAL + HEIGHTELEMENTO,
+				WIDTHELEMENTO, HEIGHTELEMENTO);
+		JlblEstadosPorUsuario[0].setFont(FUENTE);
+		JlblEstadosPorUsuario[0].setText("E1");
+		secondPane.add(JlblEstadosPorUsuario[0]);
+
+		JlblEstadosPorUsuario[1] = new JLabel();
+		JlblEstadosPorUsuario[1].setBounds(
+				XINICIAL,
+				JlblEstadosPorUsuario[0].getY()
+						+ JlblEstadosPorUsuario[0].getHeight(), WIDTHELEMENTO,
+				HEIGHTELEMENTO);
+		JlblEstadosPorUsuario[1].setFont(FUENTE);
+		JlblEstadosPorUsuario[1].setText("E2");
+		secondPane.add(JlblEstadosPorUsuario[1]);
+
+		JlblSimbolosPorUsuario = new JLabel[2];
+
+		JlblSimbolosPorUsuario[0] = new JLabel();
+		JlblSimbolosPorUsuario[0].setBounds(XINICIAL + WIDTHELEMENTO, YINICIAL,
+				WIDTHCOMBO, HEIGHTELEMENTO);
+		JlblSimbolosPorUsuario[0].setFont(FUENTE);
+		JlblSimbolosPorUsuario[0].setText("S1");
+		secondPane.add(JlblSimbolosPorUsuario[0]);
+
+		JlblSimbolosPorUsuario[1] = new JLabel();
+		JlblSimbolosPorUsuario[1].setBounds(JlblSimbolosPorUsuario[0].getX()
+				+ WIDTHCOMBO, YINICIAL, WIDTHCOMBO, HEIGHTELEMENTO);
+		JlblSimbolosPorUsuario[1].setFont(FUENTE);
+		JlblSimbolosPorUsuario[1].setText("S2");
+		secondPane.add(JlblSimbolosPorUsuario[1]);
+
+		JlbmatrizTransiciones = new JLabel[2][2];
+		int x = XINICIAL + WIDTHELEMENTO, y = YINICIAL + HEIGHTELEMENTO;
+		for (int i = 0; i < JlbmatrizTransiciones.length; i++) {
+			for (int j = 0; j < JlbmatrizTransiciones[0].length; j++) {
+				JlbmatrizTransiciones[i][j] = new JLabel();
+				JlbmatrizTransiciones[i][j].setBounds(x, y, WIDTHCOMBO,
+						HEIGHTELEMENTO);
+				JlbmatrizTransiciones[i][j].setBorder(BorderFactory
+						.createLineBorder(Color.GRAY, 1));
+				JlbmatrizTransiciones[i][j].setFont(FUENTE);
+				JlbmatrizTransiciones[i][j].setText("T");
+				secondPane.add(JlbmatrizTransiciones[i][j]);
+				x += WIDTHCOMBO;
+			}
+			x = XINICIAL + WIDTHELEMENTO;
+			y = y + HEIGHTELEMENTO;
+		}
+
+		JlblAceptacionesPorUsuario = new JLabel[2];
+		JlblAceptacionesPorUsuario = new JLabel[2];
+		JlblAceptacionesPorUsuario[0] = new JLabel();
+		JlblAceptacionesPorUsuario[0].setBounds(XINICIAL + WIDTHELEMENTO
+				+ WIDTHCOMBO * 2, YINICIAL + HEIGHTELEMENTO, WIDTHCOMBO,
+				HEIGHTELEMENTO);
+		JlblAceptacionesPorUsuario[0].setText("0");
+		JlblAceptacionesPorUsuario[0].setFont(FUENTE);
+		secondPane.add(JlblAceptacionesPorUsuario[0]);
+
+		JlblAceptacionesPorUsuario[1] = new JLabel();
+		JlblAceptacionesPorUsuario[1].setBounds(XINICIAL + WIDTHELEMENTO
+				+ WIDTHCOMBO * 2, JlblAceptacionesPorUsuario[0].getY()
+				+ HEIGHTELEMENTO, WIDTHCOMBO, HEIGHTELEMENTO);
+		JlblAceptacionesPorUsuario[1].setText("0");
+		JlblAceptacionesPorUsuario[1].setFont(FUENTE);
+		secondPane.add(JlblAceptacionesPorUsuario[1]);
 
 	}
 

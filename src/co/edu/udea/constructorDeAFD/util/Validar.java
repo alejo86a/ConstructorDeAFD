@@ -11,6 +11,7 @@ import java.util.StringTokenizer;
 import java.util.Vector;
 
 import javax.swing.BorderFactory;
+import javax.swing.JButton;
 import javax.swing.JFormattedTextField;
 
 /**
@@ -73,7 +74,7 @@ public class Validar {
 					sigueEnError = true;
 			}
 		}
-		ordena(texto);
+		texto = ordena(texto);
 		if(texto.endsWith(",")){
 			texto = texto.substring(0, texto.length()-1);
 		}
@@ -86,14 +87,19 @@ public class Validar {
 		}
 	}
 
-	private void ordena(String texto) {
+	private String ordena(String texto) {
 		StringTokenizer auxTexto = new StringTokenizer(texto,",");
 		String[] auxVectexto = new String[auxTexto.countTokens()];	
 		for(int i=0;auxTexto.hasMoreTokens();i++){
 			auxVectexto[i] = auxTexto.nextToken();
 		}
 		Arrays.sort(auxVectexto);
-		
+		texto = "";
+		for (int i = 0; i < auxVectexto.length; i++) {
+			texto +=auxVectexto[i]+",";
+			System.out.println(auxVectexto[i]);
+		}
+		return texto;
 	}
 
 	private boolean estadoExite(String aux) {

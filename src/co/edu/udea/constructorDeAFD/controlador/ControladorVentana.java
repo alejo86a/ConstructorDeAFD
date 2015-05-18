@@ -41,11 +41,11 @@ public class ControladorVentana {
 				aceptaciones);
 		aFSimplicado = aFUsuario;
 		aFSimplicado.Simplifique();
-		aFSimplicado.generarHilera();
+	
 	}
 
 	public Vector<String> getSimbolos() {
-		return aFSimplicado.getAceptaciones();
+		return aFSimplicado.getSimbolos();
 	}
 
 	public Vector<String> getAceptaciones() {
@@ -66,5 +66,13 @@ public class ControladorVentana {
 	}
 	public void funciona(){
 		System.out.println("funciono");
+	}
+	public String[] getHileras(){
+		String[] h =aFSimplicado.generarHilera(); 
+		return h;
+	}
+	
+	public Vector validaHilera(String s){
+		return aFSimplicado.validarHilera1(s);
 	}
 }

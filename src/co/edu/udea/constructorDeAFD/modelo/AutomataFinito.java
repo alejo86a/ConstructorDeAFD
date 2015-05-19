@@ -380,6 +380,14 @@ System.out.println(auxEstado = n[estadoActual][x]);
 	}
 
 	public Vector validarHilera1(String h) {
+		String[] rutaS;
+		String[][] n = new String[transiciones.size()][transiciones
+		                               				.elementAt(0).size()];
+		for (int i = 0; i < transiciones.size(); i++) {
+			for (int j = 0; j < transiciones.elementAt(0).size(); j++) {
+				n[i][j] = (String) transiciones.elementAt(i).elementAt(j);
+			}
+		}
 		Vector ruta = new Vector();
 		ruta.addElement(estados.elementAt(0));
 		String via = "";
@@ -387,11 +395,13 @@ System.out.println(auxEstado = n[estadoActual][x]);
 
 		for (int i = 0; i < h.length(); i++) {
 			int x = buscarSimboloPorLetra(h.charAt(i));
-			ruta.addElement(transiciones.elementAt(x).elementAt(
-					buscarEstado(estadoActual)));
-			estadoActual = (String) transiciones.elementAt(x).elementAt(
-					buscarEstado(estadoActual));
+			ruta.addElement(n[buscarEstado(estadoActual)][x]);
+			estadoActual = n[buscarEstado(estadoActual)][x];
 
+		}
+		rutaS=new String[ruta.size()];
+		for (int i = 0; i < ruta.size(); i++) {
+			rutaS[i]=(String) ruta.elementAt(i);
 		}
 
 		via = via + "Estado Inicial ---->> " + estados.elementAt(0);
@@ -405,7 +415,7 @@ System.out.println(auxEstado = n[estadoActual][x]);
 
 		}
 
-		int evaluar = buscarEstado((String) ruta.elementAt((ruta.size()) - 1));
+		int evaluar = buscarEstado( rutaS[rutaS.length-1]);
 		if (esAceptacion(evaluar)) {
 			via = via + "\n" + "La hilera  " + h
 					+ " es ACEPTADA  Por el automata :D ";

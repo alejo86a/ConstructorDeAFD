@@ -230,6 +230,14 @@ public class AutomataFinito {
 			Random y = new Random();
 
 			int x = y.nextInt(simbolos.size());
+			if (esError(x)) {
+				
+			
+			while (esError(x)) {
+				 x = y.nextInt(simbolos.size());
+				
+			}
+			}
 			boolean b = false;
 			String aux = "";
 
@@ -248,6 +256,9 @@ System.out.println(auxEstado = n[estadoActual][x]);
 					aux = aux + buscarSimbolo(x);
 					estadoActual = e;
 					x = y.nextInt(simbolos.size());
+					
+					
+					
 				}
 
 				if (esAceptacion(estadoActual)) {
@@ -347,13 +358,21 @@ System.out.println(auxEstado = n[estadoActual][x]);
 	}
 
 	private boolean esError(int e) {
-		String simbolo = buscarSimbolo(e);
+		
+		String simbolo = estados.elementAt(e);
 		boolean b = false;
+		String[][] n = new String[transiciones.size()][transiciones
+			                               				.elementAt(0).size()];
+			for (int i = 0; i < transiciones.size(); i++) {
+				for (int j = 0; j < transiciones.elementAt(0).size(); j++) {
+					n[i][j] = (String) transiciones.elementAt(i).elementAt(j);
+				}
+			}
 		if (aceptaciones.elementAt(e) == true) {
 			return false;
 		} else {
-			for (int i = 0; i < transiciones.size(); i++) {
-				String aux = (String) transiciones.elementAt(i).elementAt(e);
+			for (int i = 0; i < n.length; i++) {
+				String aux = n[e][i];
 				if ((simbolo.compareTo(aux) == 0)) {
 					b = true;
 				} else {
